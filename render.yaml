@@ -6,8 +6,6 @@ services:
     buildCommand: npm install
     startCommand: node index.js
     envVars:
-      - key: MONGO_URI
-        sync: false # Render will ask you for this value during setup
       - key: CLIENT_URL
         sync: false # You can add this later once Vercel is done
       - key: PORT
