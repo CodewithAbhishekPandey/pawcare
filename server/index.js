@@ -92,6 +92,8 @@ async function startServer() {
     // If no external MongoDB, use in-memory
     if (!mongoUri || mongoUri.includes('127.0.0.1') || mongoUri.includes('localhost')) {
       const { MongoMemoryServer } = require('mongodb-memory-server');
+      // Fix for Render (Debian 12) which requires MongoDB >= 7.0.3
+      process.env.MONGOMS_VERSION = '7.0.14'; 
       const mongoServer = await MongoMemoryServer.create();
       mongoUri = mongoServer.getUri();
       console.log('⚡ Using In-Memory MongoDB (development mode)');
