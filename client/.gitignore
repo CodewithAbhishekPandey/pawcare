@@ -1,0 +1,8 @@
+node_modules/
+.env
+dist/
+*.log
+out.txt
+client_err.log
+build_out.txt
+vite.log
