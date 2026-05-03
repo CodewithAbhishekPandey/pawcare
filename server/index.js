@@ -20,12 +20,7 @@ const httpServer = http.createServer(app);
 // ─── Socket.io ────────────────────────────────────────────────────────────────
 const io = new Server(httpServer, {
   cors: {
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'http://localhost:5174',
-      process.env.CLIENT_URL,
-    ].filter(Boolean),
+    origin: true,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -40,12 +35,7 @@ app.set('io', io);
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://localhost:5174',
-    process.env.CLIENT_URL,
-  ].filter(Boolean),
+  origin: true,
   credentials: true,
 }));
 app.use(express.json());

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const signToken = (userId, role) =>
-  jwt.sign({ id: userId, role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  jwt.sign({ id: userId, role }, process.env.JWT_SECRET || 'pawcare_super_secret_key_2026', { expiresIn: '7d' });
 
 // POST /api/auth/register
 exports.register = async (req, res) => {
