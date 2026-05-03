@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { SocketProvider } from './context/SocketContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Layout
 import Navbar from './components/Navbar';
@@ -65,7 +66,7 @@ function AppRoutes({ settings }) {
           <Route path="*" element={
             <div className="text-center py-32">
               <p className="text-6xl mb-4">🐾</p>
-              <h2 className="text-3xl font-bold text-white mb-3">Page Not Found</h2>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-3">Page Not Found</h2>
               <p className="text-slate-400 mb-8">Looks like this trail leads nowhere.</p>
               <a href="/" className="px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-semibold transition-colors">
                 Go Home
@@ -97,17 +98,19 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      <CartProvider>
-        <SocketProvider>
-          <BrowserRouter>
-            <div className="min-h-screen bg-slate-900 text-white" style={{ fontFamily: "'Inter', sans-serif" }}>
-              <AppRoutes settings={settings} />
-            </div>
-          </BrowserRouter>
-        </SocketProvider>
-      </CartProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <SocketProvider>
+            <BrowserRouter>
+              <div className="min-h-screen transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <AppRoutes settings={settings} />
+              </div>
+            </BrowserRouter>
+          </SocketProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

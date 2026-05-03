@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = ({ settings = {} }) => {
   const { user, logout } = useAuth();
   const { totalItems } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -16,10 +18,10 @@ const Navbar = ({ settings = {} }) => {
   };
 
   const linkCls = ({ isActive }) =>
-    `font-medium text-sm transition-colors ${isActive ? 'text-rose-400' : 'text-slate-300 hover:text-white'}`;
+    `font-medium text-sm transition-colors ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'}`;
 
   return (
-    <header className="border-b border-white/10 bg-slate-900/90 backdrop-blur-md sticky top-0 z-40">
+    <header className="border-b border-slate-200/50 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
 
         {/* Logo */}
@@ -40,7 +42,7 @@ const Navbar = ({ settings = {} }) => {
               to="/instant-consult"
               className={({ isActive }) =>
                 `flex items-center gap-1.5 font-semibold text-sm transition-colors ${
-                  isActive ? 'text-rose-400' : 'text-slate-300 hover:text-white'
+                  isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
                 }`
               }
             >
@@ -61,7 +63,7 @@ const Navbar = ({ settings = {} }) => {
               {user.role === 'pet_owner' && (
                 <Link
                   to="/cart"
-                  className="relative p-2 text-slate-300 hover:text-white transition-colors"
+                  className="relative p-2 text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
                   title="Cart"
                 >
                   🛒
@@ -74,30 +76,39 @@ const Navbar = ({ settings = {} }) => {
               )}
               <Link
                 to="/dashboard"
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-xl text-sm transition-all"
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white font-medium rounded-xl text-sm transition-all"
               >
                 Dashboard
               </Link>
-              <span className="text-xs px-3 py-1.5 bg-white/10 rounded-full text-slate-300 font-medium capitalize">
+              <span className="text-xs px-3 py-1.5 bg-slate-100 dark:bg-white/10 rounded-full text-slate-600 dark:text-slate-300 font-medium capitalize">
                 {user.role.replace('_', ' ')} · {user.name.split(' ')[0]}
               </span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 border border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white rounded-xl text-sm font-medium transition-all"
+                className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white rounded-xl text-sm font-medium transition-all"
               >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="px-4 py-2 text-slate-300 hover:text-white text-sm font-medium transition-colors">
+              <Link to="/login" className="px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white text-sm font-medium transition-colors">
                 Sign In
               </Link>
-              <Link to="/register" className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl text-sm shadow-lg transition-all">
+              <Link to="/register" className="px-4 py-2 bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-rose-500/20 transition-all transform hover:scale-105 active:scale-95">
                 Get Started
               </Link>
             </>
           )}
+
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors"
+            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          >
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
         </div>
 
         {/* Mobile Toggle */}
