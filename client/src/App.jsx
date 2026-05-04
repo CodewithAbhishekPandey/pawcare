@@ -8,6 +8,7 @@ import { ThemeProvider } from './context/ThemeContext';
 // Layout
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
+import BubbzyChat from './components/BubbzyChat';
 
 // Pages
 import Home from './pages/Home';
@@ -81,6 +82,9 @@ function AppRoutes({ settings }) {
           } />
         </Routes>
       </main>
+
+      {/* Bubbzy AI Chatbot — fixed bottom-right across all pages */}
+      <BubbzyChat />
     </>
   );
 }
