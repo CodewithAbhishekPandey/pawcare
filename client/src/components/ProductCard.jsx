@@ -12,9 +12,9 @@ const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
 
   return (
-    <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden hover:border-rose-500/40 hover:shadow-xl hover:shadow-rose-500/5 transition-all duration-300 group flex flex-col">
+    <div className="bg-white border border-stone-100 rounded-3xl overflow-hidden hover:shadow-md hover:border-emerald-200 transition-all duration-300 group flex flex-col shadow-sm">
       {/* Image / Placeholder */}
-      <div className="h-44 bg-slate-700/50 flex items-center justify-center overflow-hidden relative">
+      <div className="h-44 bg-stone-50 flex items-center justify-center overflow-hidden relative">
         {product.imageUrl ? (
           <img
             src={product.imageUrl}
@@ -25,12 +25,12 @@ const ProductCard = ({ product }) => {
           <span className="text-6xl">{CATEGORY_EMOJI[product.category] || '📦'}</span>
         )}
         {product.stock < 5 && product.stock > 0 && (
-          <span className="absolute top-2 right-2 bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+          <span className="absolute top-3 right-3 bg-orange-100 border border-orange-200 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
             Only {product.stock} left!
           </span>
         )}
         {product.stock === 0 && (
-          <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+          <span className="absolute top-3 right-3 bg-red-100 border border-red-200 text-red-700 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
             Out of stock
           </span>
         )}
@@ -38,28 +38,28 @@ const ProductCard = ({ product }) => {
 
       <div className="p-5 flex flex-col flex-1">
         <div className="mb-1">
-          <span className="text-xs px-2 py-0.5 bg-rose-500/15 border border-rose-500/20 text-rose-300 rounded-full font-medium capitalize">
+          <span className="text-xs px-2.5 py-1 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-full font-bold capitalize tracking-wide">
             {product.category}
           </span>
         </div>
-        <h3 className="font-bold text-white text-base mt-2 group-hover:text-rose-400 transition-colors line-clamp-2 flex-1">
+        <h3 className="font-extrabold text-slate-800 text-base mt-3 group-hover:text-emerald-700 transition-colors line-clamp-2 flex-1">
           {product.name}
         </h3>
         {product.brand && (
-          <p className="text-slate-500 text-xs mt-0.5">{product.brand}</p>
+          <p className="text-slate-500 font-medium text-xs mt-1">{product.brand}</p>
         )}
         {product.description && (
           <p className="text-slate-400 text-sm mt-2 line-clamp-2">{product.description}</p>
         )}
 
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-700/50">
-          <span className="text-xl font-bold text-white">
+        <div className="flex items-center justify-between mt-5 pt-4 border-t border-stone-100">
+          <span className="text-xl font-black text-slate-800">
             ₹{product.price.toLocaleString('en-IN')}
           </span>
           <button
             onClick={() => addToCart(product)}
             disabled={product.stock === 0}
-            className="px-4 py-2 bg-rose-500 hover:bg-rose-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl text-sm transition-colors"
+            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-stone-300 disabled:text-stone-500 disabled:cursor-not-allowed text-white font-bold rounded-2xl text-sm transition-all shadow-sm active:scale-95"
           >
             {product.stock === 0 ? 'Sold Out' : '+ Add'}
           </button>

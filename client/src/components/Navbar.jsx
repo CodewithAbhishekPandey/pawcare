@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
@@ -9,168 +9,158 @@ const Navbar = ({ settings = {} }) => {
   const { totalItems } = useCart();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     navigate('/');
-    setMenuOpen(false);
   };
 
-  const linkCls = ({ isActive }) =>
-    `font-medium text-sm transition-colors ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'}`;
+  const desktopLinkCls = ({ isActive }) =>
+    `font-semibold text-sm transition-colors ${
+      isActive ? 'text-emerald-700' : 'text-slate-500 hover:text-emerald-900'
+    }`;
+
+  const mobileLinkCls = (path) => {
+    const isActive = location.pathname === path;
+    return `flex flex-col items-center justify-center w-full py-2 space-y-1 ${
+      isActive ? 'text-emerald-700' : 'text-slate-400 hover:text-emerald-600'
+    }`;
+  };
 
   return (
-    <header className="border-b border-slate-200/50 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+    <>
+      {/* Desktop Header */}
+      <header className="border-b border-stone-200 bg-white/90 backdrop-blur-md sticky top-0 z-40 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-2xl">🐾</span>
+            <span className="text-2xl font-extrabold text-emerald-900 tracking-tight">
+              PawCare
+            </span>
+          </Link>
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl">🐾</span>
-          <span className="text-2xl font-black bg-gradient-to-r from-rose-500 to-orange-400 bg-clip-text text-transparent">
-            PawCare
-          </span>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6">
-          <NavLink to="/" className={linkCls} end>Home</NavLink>
-          <NavLink to="/vets" className={linkCls}>Find Vets</NavLink>
-          {settings.marketplace_enabled !== false && <NavLink to="/shop" className={linkCls}>Shop</NavLink>}
-          {user && <NavLink to="/appointments" className={linkCls}>Appointments</NavLink>}
-          {settings.consult_enabled !== false && (
-            <NavLink
-              to="/instant-consult"
-              className={({ isActive }) =>
-                `flex items-center gap-1.5 font-semibold text-sm transition-colors ${
-                  isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
-                }`
-              }
-            >
-              📹 Instant Consult
-              <span className="flex items-center gap-1 px-1.5 py-0.5 bg-rose-500/20 border border-rose-500/30 text-rose-400 rounded-full text-xs font-bold">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
-                Live
-              </span>
-            </NavLink>
-          )}
-        </nav>
-
-        {/* Desktop Auth */}
-        <div className="hidden md:flex items-center gap-3">
-          {user ? (
-            <>
-              {/* Cart icon (pet_owner) */}
-              {user.role === 'pet_owner' && (
-                <Link
-                  to="/cart"
-                  className="relative p-2 text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
-                  title="Cart"
-                >
-                  🛒
-                  {totalItems > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-                      {totalItems}
-                    </span>
-                  )}
-                </Link>
-              )}
-              <Link
-                to="/dashboard"
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white font-medium rounded-xl text-sm transition-all"
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-8">
+            <NavLink to="/" className={desktopLinkCls} end>Home</NavLink>
+            <NavLink to="/vets" className={desktopLinkCls}>Find Vets</NavLink>
+            {settings.marketplace_enabled !== false && <NavLink to="/shop" className={desktopLinkCls}>Shop</NavLink>}
+            {user && <NavLink to="/appointments" className={desktopLinkCls}>Bookings</NavLink>}
+            {settings.consult_enabled !== false && (
+              <NavLink
+                to="/instant-consult"
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 font-bold text-sm transition-colors ${
+                    isActive ? 'text-emerald-700' : 'text-slate-500 hover:text-emerald-900'
+                  }`
+                }
               >
-                Dashboard
-              </Link>
-              <span className="text-xs px-3 py-1.5 bg-slate-100 dark:bg-white/10 rounded-full text-slate-600 dark:text-slate-300 font-medium capitalize">
-                {user.role.replace('_', ' ')} · {user.name.split(' ')[0]}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white rounded-xl text-sm font-medium transition-all"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white text-sm font-medium transition-colors">
-                Sign In
-              </Link>
-              <Link to="/register" className="px-4 py-2 bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-rose-500/20 transition-all transform hover:scale-105 active:scale-95">
-                Get Started
-              </Link>
-            </>
-          )}
-        </div>
+                📹 Instant Consult
+                <span className="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold border border-emerald-100">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Live
+                </span>
+              </NavLink>
+            )}
+          </nav>
 
-        {/* Right Controls (Theme + Mobile Menu) */}
-        <div className="flex items-center gap-2">
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors"
-            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-          >
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
-
-          {/* Mobile Toggle */}
-          <button
-            className="md:hidden p-2 text-slate-800 dark:text-slate-300 hover:text-rose-500"
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? '✕' : '☰'}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden border-t border-slate-200/50 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 px-4 py-4 space-y-3 backdrop-blur-md">
-          <NavLink to="/" end className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`} onClick={() => setMenuOpen(false)}>
-            Home
-          </NavLink>
-          <NavLink to="/vets" className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`} onClick={() => setMenuOpen(false)}>
-            Find Vets
-          </NavLink>
-          {settings.marketplace_enabled !== false && (
-            <NavLink to="/shop" className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`} onClick={() => setMenuOpen(false)}>
-              Shop
-            </NavLink>
-          )}
-          {user && (
-            <NavLink to="/appointments" className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-400' : 'text-slate-300'}`} onClick={() => setMenuOpen(false)}>
-              Appointments
-            </NavLink>
-          )}
-          {settings.consult_enabled !== false && (
-            <NavLink to="/instant-consult" className={({ isActive }) => `flex items-center gap-2 py-2 font-semibold text-sm ${isActive ? 'text-rose-400' : 'text-slate-300'}`} onClick={() => setMenuOpen(false)}>
-              📹 Instant Consult
-              <span className="px-1.5 py-0.5 bg-rose-500/20 border border-rose-500/24 text-rose-400 rounded-full text-xs font-bold">Live</span>
-            </NavLink>
-          )}
-          <div className="pt-3 border-t border-slate-700">
+          {/* Desktop Auth */}
+          <div className="hidden md:flex items-center gap-4">
             {user ? (
-              <div className="space-y-2">
+              <>
                 {user.role === 'pet_owner' && (
-                  <Link to="/cart" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 py-2 text-slate-300 text-sm">
-                    🛒 Cart {totalItems > 0 && <span className="bg-rose-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">{totalItems}</span>}
+                  <Link
+                    to="/cart"
+                    className="relative p-2 text-slate-500 hover:text-emerald-900 transition-colors"
+                    title="Cart"
+                  >
+                    <span className="text-xl">🛒</span>
+                    {totalItems > 0 && (
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-sm">
+                        {totalItems}
+                      </span>
+                    )}
                   </Link>
                 )}
-                <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="block py-2 text-slate-300 text-sm">Dashboard</Link>
-                <button onClick={handleLogout} className="w-full py-2 text-left text-slate-400 text-sm">Logout ({user.name})</button>
-              </div>
+                <Link
+                  to="/dashboard"
+                  className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-slate-800 font-semibold rounded-2xl text-sm transition-all"
+                >
+                  Dashboard
+                </Link>
+                <span className="text-xs px-3 py-1.5 bg-stone-100 rounded-full text-slate-600 font-medium capitalize">
+                  {user.role.replace('_', ' ')} · {user.name.split(' ')[0]}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-slate-500 hover:text-slate-800 font-medium text-sm transition-all"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
-              <div className="flex gap-3">
-                <Link to="/login" onClick={() => setMenuOpen(false)} className="flex-1 py-2 text-center border border-slate-600 rounded-xl text-slate-300 text-sm">Sign In</Link>
-                <Link to="/register" onClick={() => setMenuOpen(false)} className="flex-1 py-2 text-center bg-rose-500 rounded-xl text-white font-bold text-sm">Register</Link>
-              </div>
+              <>
+                <Link to="/login" className="px-4 py-2 text-slate-500 hover:text-slate-900 text-sm font-semibold transition-colors">
+                  Sign In
+                </Link>
+                <Link to="/register" className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-3xl text-sm shadow-sm transition-all transform hover:scale-105">
+                  Get Started
+                </Link>
+              </>
             )}
           </div>
+
+          {/* Mobile Cart Icon (Top right on mobile) */}
+          <div className="flex md:hidden items-center gap-3">
+             {user && user.role === 'pet_owner' && (
+               <Link to="/cart" className="relative p-2 text-slate-600">
+                 <span className="text-xl">🛒</span>
+                 {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                 )}
+               </Link>
+             )}
+             {!user && (
+               <Link to="/login" className="text-sm font-bold text-emerald-700">Sign In</Link>
+             )}
+          </div>
         </div>
-      )}
-    </header>
+      </header>
+
+      {/* Mobile Bottom Tab Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 z-50 pb-safe">
+        <div className="flex justify-around items-center h-16">
+          <Link to="/" className={mobileLinkCls('/')}>
+            <span className="text-xl">🏠</span>
+            <span className="text-[10px] font-semibold">Home</span>
+          </Link>
+          <Link to="/vets" className={mobileLinkCls('/vets')}>
+            <span className="text-xl">🔍</span>
+            <span className="text-[10px] font-semibold">Search</span>
+          </Link>
+          {settings.marketplace_enabled !== false && (
+            <Link to="/shop" className={mobileLinkCls('/shop')}>
+              <span className="text-xl">🛍️</span>
+              <span className="text-[10px] font-semibold">Shop</span>
+            </Link>
+          )}
+          {user ? (
+             <Link to="/appointments" className={mobileLinkCls('/appointments')}>
+                <span className="text-xl">📅</span>
+                <span className="text-[10px] font-semibold">Bookings</span>
+             </Link>
+          ) : (
+             <Link to="/register" className={mobileLinkCls('/register')}>
+                <span className="text-xl">✨</span>
+                <span className="text-[10px] font-semibold">Join</span>
+             </Link>
+          )}
+        </div>
+      </nav>
+    </>
   );
 };
 

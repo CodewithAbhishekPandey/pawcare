@@ -103,7 +103,7 @@ function App() {
         <CartProvider>
           <SocketProvider>
             <BrowserRouter>
-              <div className="min-h-screen transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <div className="min-h-screen bg-paw-pattern transition-colors duration-300">
                 <AppRoutes settings={settings} />
               </div>
             </BrowserRouter>
