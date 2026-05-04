@@ -2,172 +2,144 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Spline from '@splinetool/react-spline';
 
-const FEATURES = [
-  { icon: '🏥', title: 'Verified Clinics', desc: 'Browse 50+ trusted vet clinics across Gurugram.' },
-  { icon: '📅', title: 'Instant Booking', desc: 'Book appointments in seconds. Get confirmed slots.' },
-  { icon: '🛒', title: 'Premium Pet Shop', desc: 'Shop top brands for food, medicine, and toys.' },
-  { icon: '🐾', title: 'Pet Profiles', desc: 'Keep track of your pet\'s health history and meds.' },
+const CATEGORIES = [
+  { id: 1, label: 'Grooming', icon: '🪮', bg: 'bg-paw-yellow/20', color: 'text-paw-yellow' },
+  { id: 2, label: 'Veterinary', icon: '❤️', bg: 'bg-paw-pink', color: 'text-pink-600' },
+  { id: 3, label: 'Foods', icon: '🥩', bg: 'bg-paw-green', color: 'text-green-700' },
+  { id: 4, label: 'More', icon: '💬', bg: 'bg-stone-200', color: 'text-stone-600' },
 ];
 
-const STATS = [
-  { value: '50+', label: 'Verified Clinics' },
-  { value: '500+', label: 'Pet Owners' },
-  { value: '1200+', label: 'Appointments' },
-  { value: '4.8★', label: 'Avg. Rating' },
+const SHOP_CATEGORIES = [
+  { id: 'dog', label: 'Dog', img: '🐶', bg: 'bg-paw-yellow/40' },
+  { id: 'cat', label: 'Cat', img: '🐱', bg: 'bg-paw-yellow/20' },
+  { id: 'rodent', label: 'Rodent', img: '🐹', bg: 'bg-paw-pink' },
 ];
-
-// Animation variants
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, type: 'spring', bounce: 0.4 } }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
-};
 
 const Home = ({ settings = {} }) => {
   const { user } = useAuth();
 
   return (
-    <div className="relative overflow-hidden rounded-[3rem] bg-[#FFF3B0] dark:bg-[#2D6A4F] transition-colors duration-500 shadow-2xl shadow-slate-200/50 dark:shadow-none mb-10 pb-20">
+    <div className="bg-paw-cream min-h-screen pb-24 font-sans text-paw-teal">
       
-      {/* Decorative Blob */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#FF9F1C]/20 blur-[100px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/20 dark:bg-black/20 blur-[100px] rounded-full pointer-events-none" />
-
-      {/* Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-20 pb-16 lg:pt-32 lg:pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Left: Typography */}
-        <motion.div 
-          className="z-10 text-center lg:text-left"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-5 py-2 bg-white/60 dark:bg-black/20 backdrop-blur-md border border-white/50 dark:border-white/10 rounded-full text-[#2D6A4F] dark:text-[#FFF3B0] text-sm font-black mb-6 uppercase tracking-wider">
-            🐾 Gurugram's #1 Pet Platform
-          </motion.div>
+      {/* 1. Hero Section */}
+      <section className="px-4 pt-4 mb-8">
+        <div className="bg-paw-yellow rounded-[2.5rem] pt-8 px-6 pb-0 flex flex-col items-center relative overflow-hidden h-[350px]">
+          <img 
+            src="/assets/hero_3d_pet_owner.png" 
+            alt="Happy pet owner" 
+            className="w-full max-w-[280px] object-cover absolute bottom-0 object-bottom"
+          />
+        </div>
+        
+        <div className="text-center mt-8 px-4">
+          <h1 className="text-4xl md:text-5xl font-serif font-black leading-[1.1] mb-3">
+            Take Care of<br/>Your Pet
+          </h1>
+          <p className="text-stone-500 font-medium text-sm md:text-base mb-8 max-w-xs mx-auto">
+            Everything your pet needs<br/>— all in one app
+          </p>
           
-          <motion.h1 variants={fadeInUp} className="text-6xl md:text-7xl lg:text-8xl font-black text-[#2D6A4F] dark:text-[#FFF3B0] mb-8 leading-[1.1] tracking-tight">
-            {settings.homepage_banner_text ? (
-              <span dangerouslySetInnerHTML={{ __html: settings.homepage_banner_text.replace('\n', '<br/>') }} />
-            ) : (
-              <>Premium Pet Care,<br />Delivered Daily.</>
-            )}
-          </motion.h1>
-          
-          <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-[#2D6A4F]/80 dark:text-[#FFF3B0]/80 font-bold max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-10">
-            {settings.homepage_banner_subtext || "Your pets deserve the best. Book vetted clinics, track appointments, and shop premium products."}
-          </motion.p>
-          
-          <motion.div variants={fadeInUp} className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <Link
-              to="/vets"
-              className="px-8 py-4 bg-[#FF9F1C] hover:bg-[#ff8c00] text-white font-black text-xl rounded-2xl shadow-xl shadow-[#FF9F1C]/40 transition-all transform hover:-translate-y-1 active:scale-95"
-            >
-              Find a Vet Clinic →
-            </Link>
-            <Link
-              to="/shop"
-              className="px-8 py-4 bg-white/60 hover:bg-white dark:bg-black/20 dark:hover:bg-black/40 text-[#2D6A4F] dark:text-[#FFF3B0] font-black text-xl rounded-2xl border-2 border-[#2D6A4F]/10 dark:border-[#FFF3B0]/10 backdrop-blur-md transition-all transform hover:-translate-y-1 active:scale-95"
-            >
-              🛒 Browse Shop
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        {/* Right: 3D Spline Scene */}
-        <motion.div 
-          className="relative h-[400px] lg:h-[600px] w-full z-0 cursor-grab active:cursor-grabbing"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2, type: 'spring' }}
-        >
-          {/* We use a well-known lightweight interactive Spline 3D Dog scene */}
-          <Spline scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode" className="w-full h-full object-cover" />
-        </motion.div>
+          <Link
+            to={user ? "/vets" : "/register"}
+            className="inline-flex items-center gap-3 bg-paw-teal text-white px-6 py-3 rounded-full font-bold text-lg hover:bg-opacity-90 transition-all active:scale-95 shadow-xl shadow-paw-teal/20"
+          >
+            <span className="w-10 h-10 bg-paw-yellow rounded-full flex items-center justify-center text-paw-teal text-xl">
+              🐾
+            </span>
+            Let's Go
+          </Link>
+        </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="max-w-7xl mx-auto px-6 mb-24">
-        <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          {STATS.map((s) => (
-            <motion.div 
-              key={s.label} 
-              variants={fadeInUp}
-              className="bg-white/60 dark:bg-black/20 border border-white/40 dark:border-white/10 rounded-[2rem] p-8 text-center shadow-xl shadow-[#2D6A4F]/5 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:bg-white dark:hover:bg-black/30"
-            >
-              <p className="text-4xl lg:text-5xl font-black text-[#FF9F1C] mb-2">{s.value}</p>
-              <p className="text-[#2D6A4F] dark:text-[#FFF3B0] text-sm lg:text-base font-bold uppercase tracking-wider">{s.label}</p>
-            </motion.div>
+      {/* 2. Categories Row */}
+      <section className="px-6 mb-10 overflow-x-auto hide-scrollbar">
+        <div className="flex justify-between md:justify-center md:gap-12 min-w-max">
+          {CATEGORIES.map(cat => (
+            <div key={cat.id} className="flex flex-col items-center gap-2 cursor-pointer group">
+              <div className={`w-16 h-16 ${cat.bg} rounded-3xl flex items-center justify-center text-3xl group-hover:scale-105 transition-transform`}>
+                {cat.icon}
+              </div>
+              <span className="text-xs font-bold text-stone-600">{cat.label}</span>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </section>
 
-      {/* Features Section */}
-      <section className="max-w-7xl mx-auto px-6 mb-24">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          <motion.h2 variants={fadeInUp} className="text-4xl lg:text-5xl font-black text-[#2D6A4F] dark:text-[#FFF3B0] text-center mb-4">Everything Your Pet Needs</motion.h2>
-          <motion.p variants={fadeInUp} className="text-xl text-[#2D6A4F]/70 dark:text-[#FFF3B0]/70 font-bold text-center mb-16">One platform for all your pet care needs in Gurugram</motion.p>
+      {/* 3. Recommendation Section */}
+      <section className="px-6 mb-12 max-w-3xl mx-auto">
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-2xl font-serif font-bold text-paw-teal">Recommendation</h2>
+          <button className="w-8 h-8 rounded-full border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-100">
+            <span className="text-xs">⇋</span>
+          </button>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+          {/* Card 1 */}
+          <div className="bg-paw-yellow rounded-[2rem] p-5 h-[260px] flex flex-col justify-between relative overflow-hidden group cursor-pointer">
+            <div className="relative z-10">
+              <span className="text-xs font-bold text-paw-teal/60 mb-1 block">Health</span>
+              <h3 className="text-lg font-serif font-black leading-tight max-w-[120px]">The best locations for active walks</h3>
+            </div>
+            <img src="/assets/recommendation_active_walks.png" alt="Active walks" className="absolute -bottom-4 -right-4 w-40 h-40 object-contain group-hover:scale-110 transition-transform duration-500" />
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {FEATURES.map((f) => (
-              <motion.div 
-                key={f.title} 
-                variants={fadeInUp}
-                whileHover={{ y: -8 }}
-                className="bg-white/60 dark:bg-black/20 border border-white/40 dark:border-white/10 rounded-[2rem] p-8 lg:p-10 shadow-xl shadow-[#2D6A4F]/5 dark:shadow-none transition-all duration-300 backdrop-blur-md group"
-              >
-                <div className="text-5xl mb-6 inline-block p-4 bg-[#FFF3B0] dark:bg-[#2D6A4F] rounded-3xl shadow-inner group-hover:scale-110 group-hover:rotate-6 transition-transform">{f.icon}</div>
-                <h3 className="text-2xl font-black text-[#2D6A4F] dark:text-[#FFF3B0] mb-3">{f.title}</h3>
-                <p className="text-[#2D6A4F]/80 dark:text-[#FFF3B0]/80 text-lg font-medium leading-relaxed">{f.desc}</p>
-              </motion.div>
+          {/* Card 2 */}
+          <div className="bg-paw-orange rounded-[2rem] p-5 h-[260px] flex flex-col justify-between relative overflow-hidden group cursor-pointer text-white">
+            <div className="relative z-10">
+              <span className="text-xs font-bold text-white/70 mb-1 block">Education</span>
+              <h3 className="text-lg font-serif font-black leading-tight max-w-[120px]">Five Simple Commands for dogs</h3>
+            </div>
+            <img src="/assets/recommendation_simple_commands.png" alt="Simple commands" className="absolute -bottom-4 -right-4 w-40 h-40 object-contain group-hover:scale-110 transition-transform duration-500" />
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Shopping Section Preview */}
+      {settings.marketplace_enabled !== false && (
+        <section className="px-6 mb-12 max-w-3xl mx-auto">
+          <div className="flex justify-between items-center mb-5">
+            <h2 className="text-2xl font-serif font-bold text-paw-teal">Shopping</h2>
+            <Link to="/shop" className="w-8 h-8 rounded-full bg-paw-cream border border-stone-200 flex items-center justify-center text-stone-500 relative">
+              🛍️
+            </Link>
+          </div>
+          
+          {/* Search Bar */}
+          <div className="bg-white rounded-full flex items-center px-5 py-3.5 mb-6 shadow-sm border border-stone-100">
+            <span className="text-stone-400 mr-3">🔍</span>
+            <input type="text" placeholder="Search by store" className="bg-transparent border-none outline-none text-sm w-full text-paw-teal placeholder-stone-400 font-medium" />
+          </div>
+          
+          {/* Shop Categories */}
+          <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-2 mb-6">
+            {SHOP_CATEGORIES.map(cat => (
+              <button key={cat.id} className={`flex flex-col items-center justify-end p-3 rounded-3xl ${cat.bg} min-w-[80px] h-28 relative group`}>
+                <span className="text-4xl absolute top-2 group-hover:-translate-y-1 transition-transform">{cat.img}</span>
+                <span className="text-sm font-bold text-paw-teal mt-auto">{cat.label}</span>
+              </button>
             ))}
           </div>
-        </motion.div>
-      </section>
-
-      {/* CTA Section */}
-      {!user && (
-        <section className="max-w-5xl mx-auto px-6">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 50 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, type: 'spring' }}
-            className="text-center bg-[#FF9F1C] rounded-[3rem] p-16 shadow-2xl shadow-[#FF9F1C]/30 relative overflow-hidden"
-          >
-            {/* Pattern Overlay */}
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent bg-[length:20px_20px]" />
-            
-            <div className="relative z-10">
-              <h2 className="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">Ready to join the pack?</h2>
-              <p className="text-white/90 text-xl font-bold mb-10 max-w-lg mx-auto">Join thousands of pet owners across Gurugram giving their pets the best care.</p>
-              <Link
-                to="/register"
-                className="px-12 py-5 bg-white text-[#FF9F1C] font-black text-xl rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-2 inline-block"
-              >
-                Create Free Account 🐾
-              </Link>
+          
+          {/* Promo Banner */}
+          <div className="bg-paw-teal rounded-3xl p-5 flex items-center justify-between text-white shadow-lg">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-xl">
+                %
+              </div>
+              <div>
+                <h4 className="font-serif font-bold text-lg leading-tight">25% Off</h4>
+                <p className="text-xs text-paw-teal/50 text-white/70">Pet products</p>
+              </div>
             </div>
-          </motion.div>
+            <Link to="/shop" className="bg-paw-yellow text-paw-teal text-sm font-bold px-5 py-2.5 rounded-full hover:bg-yellow-400 transition-colors">
+              Get Now
+            </Link>
+          </div>
         </section>
       )}
+
     </div>
   );
 };

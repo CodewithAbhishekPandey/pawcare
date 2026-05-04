@@ -1,12 +1,23 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paw-teal: #0f4c5c;
+  --color-paw-yellow: #fbbf24;
+  --color-paw-orange: #ea580c;
+  --color-paw-pink: #fbcfe8;
+  --color-paw-green: #c8e6c9;
+  --color-paw-cream: #fdfbf7;
+  --font-sans: 'Outfit', 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    @apply bg-stone-50 text-slate-800 transition-colors duration-300;
+    @apply bg-paw-cream text-paw-teal transition-colors duration-300;
   }
 }
 
