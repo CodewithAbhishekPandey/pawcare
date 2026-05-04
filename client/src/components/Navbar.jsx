@@ -34,6 +34,7 @@ const Navbar = ({ settings = {} }) => {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6">
+          <NavLink to="/" className={linkCls} end>Home</NavLink>
           <NavLink to="/vets" className={linkCls}>Find Vets</NavLink>
           {settings.marketplace_enabled !== false && <NavLink to="/shop" className={linkCls}>Shop</NavLink>}
           {user && <NavLink to="/appointments" className={linkCls}>Appointments</NavLink>}
@@ -126,12 +127,15 @@ const Navbar = ({ settings = {} }) => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-white/10 bg-slate-900 px-4 py-4 space-y-3">
-          <NavLink to="/vets" className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-400' : 'text-slate-300'}`} onClick={() => setMenuOpen(false)}>
+        <div className="md:hidden border-t border-slate-200/50 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 px-4 py-4 space-y-3 backdrop-blur-md">
+          <NavLink to="/" end className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`} onClick={() => setMenuOpen(false)}>
+            Home
+          </NavLink>
+          <NavLink to="/vets" className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`} onClick={() => setMenuOpen(false)}>
             Find Vets
           </NavLink>
           {settings.marketplace_enabled !== false && (
-            <NavLink to="/shop" className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-400' : 'text-slate-300'}`} onClick={() => setMenuOpen(false)}>
+            <NavLink to="/shop" className={({ isActive }) => `block py-2 font-medium text-sm ${isActive ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`} onClick={() => setMenuOpen(false)}>
               Shop
             </NavLink>
           )}
