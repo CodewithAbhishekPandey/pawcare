@@ -100,25 +100,28 @@ const Navbar = ({ settings = {} }) => {
               </Link>
             </>
           )}
+        </div>
 
+        {/* Right Controls (Theme + Mobile Menu) */}
+        <div className="flex items-center gap-2">
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors"
+            className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors"
             title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
-        </div>
 
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden p-2 text-slate-300 hover:text-white"
-          onClick={() => setMenuOpen((o) => !o)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? '✕' : '☰'}
-        </button>
+          {/* Mobile Toggle */}
+          <button
+            className="md:hidden p-2 text-slate-800 dark:text-slate-300 hover:text-rose-500"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? '✕' : '☰'}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
