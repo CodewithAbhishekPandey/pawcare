@@ -5,10 +5,10 @@ import { useAuth } from '../context/AuthContext';
 import BookingForm from '../components/BookingForm';
 
 const SPEC_COLORS = {
-  dogs: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-  cats: 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
-  exotic: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-  birds: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
+  dogs: 'bg-amber-50 text-amber-700 border-amber-200',
+  cats: 'bg-purple-50 text-purple-700 border-purple-200',
+  exotic: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  birds: 'bg-sky-50 text-sky-700 border-sky-200',
 };
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -32,9 +32,9 @@ const VetProfile = () => {
   if (loading) {
     return (
       <div className="animate-pulse space-y-6">
-        <div className="h-48 bg-slate-800/60 rounded-3xl" />
-        <div className="h-32 bg-slate-800/40 rounded-2xl" />
-        <div className="h-64 bg-slate-800/40 rounded-2xl" />
+        <div className="h-48 bg-stone-100 rounded-3xl" />
+        <div className="h-32 bg-stone-100 rounded-3xl" />
+        <div className="h-64 bg-stone-100 rounded-3xl" />
       </div>
     );
   }
@@ -57,9 +57,9 @@ const VetProfile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto pb-24">
       {/* Hero Banner */}
-      <div className="relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-br from-rose-900/40 via-slate-800 to-orange-900/30 border border-slate-700/50">
+      <div className="relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-br from-paw-teal to-paw-teal/70 border border-paw-teal/20">
         <div className="p-8 md:p-12">
           <div className="flex flex-wrap items-start gap-4">
             <div className="flex-1">
@@ -67,26 +67,26 @@ const VetProfile = () => {
                 {(clinic.specializations || []).map((spec) => (
                   <span
                     key={spec}
-                    className={`text-sm px-3 py-1 rounded-full font-medium capitalize ${SPEC_COLORS[spec] || 'bg-slate-600/40 text-slate-300'}`}
+                    className="text-sm px-3 py-1 rounded-full font-bold capitalize bg-white/20 text-white border border-white/30"
                   >
                     {spec}
                   </span>
                 ))}
                 {clinic.isVerified && (
-                  <span className="text-sm px-3 py-1 rounded-full font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/25">
+                  <span className="text-sm px-3 py-1 rounded-full font-bold bg-emerald-400/20 text-emerald-100 border border-emerald-400/30">
                     ✓ Verified
                   </span>
                 )}
               </div>
               <h1 className="text-3xl md:text-4xl font-black text-white leading-tight">{clinic.name}</h1>
               {clinic.ownerRef && (
-                <p className="text-slate-300 mt-2 text-lg">Dr. {clinic.ownerRef.name}</p>
+                <p className="text-white/80 mt-2 text-lg font-medium">Dr. {clinic.ownerRef.name}</p>
               )}
             </div>
             <div className="flex flex-col items-end gap-2">
-              <div className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-2">
-                <span className="text-amber-400">★★★★★</span>
-                <span className="text-amber-300 font-bold">4.9</span>
+              <div className="flex items-center gap-1.5 bg-amber-400/20 border border-amber-400/30 rounded-2xl px-4 py-2">
+                <span className="text-amber-300">★★★★★</span>
+                <span className="text-amber-200 font-bold">4.9</span>
               </div>
             </div>
           </div>
@@ -96,22 +96,22 @@ const VetProfile = () => {
       {/* Info Grid */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
         {/* About */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-white mb-4">About</h2>
+        <div className="bg-white border border-stone-100 rounded-3xl p-6 shadow-sm">
+          <h2 className="text-lg font-black text-paw-teal mb-4">About</h2>
           <div className="space-y-3 text-sm">
             <div className="flex items-start gap-3">
               <span className="text-xl">📍</span>
               <div>
-                <p className="text-slate-400 font-medium">Address</p>
-                <p className="text-white">{clinic.address}</p>
+                <p className="text-stone-400 font-medium">Address</p>
+                <p className="text-paw-teal font-bold">{clinic.address}</p>
               </div>
             </div>
             {clinic.timings?.open && (
               <div className="flex items-start gap-3">
                 <span className="text-xl">🕐</span>
                 <div>
-                  <p className="text-slate-400 font-medium">Hours</p>
-                  <p className="text-white">{clinic.timings.open} – {clinic.timings.close}</p>
+                  <p className="text-stone-400 font-medium">Hours</p>
+                  <p className="text-paw-teal font-bold">{clinic.timings.open} – {clinic.timings.close}</p>
                 </div>
               </div>
             )}
@@ -119,8 +119,8 @@ const VetProfile = () => {
               <div className="flex items-start gap-3">
                 <span className="text-xl">✉️</span>
                 <div>
-                  <p className="text-slate-400 font-medium">Contact</p>
-                  <p className="text-white">{clinic.ownerRef.email}</p>
+                  <p className="text-stone-400 font-medium">Contact</p>
+                  <p className="text-paw-teal font-bold">{clinic.ownerRef.email}</p>
                 </div>
               </div>
             )}
@@ -129,53 +129,53 @@ const VetProfile = () => {
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 flex items-center gap-2 text-rose-400 hover:text-rose-300 text-sm font-medium transition-colors"
+            className="mt-5 flex items-center gap-2 text-paw-orange hover:text-paw-teal text-sm font-bold transition-colors"
           >
             🗺️ Open in Google Maps →
           </a>
         </div>
 
         {/* Specializations */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Specializations</h2>
+        <div className="bg-white border border-stone-100 rounded-3xl p-6 shadow-sm">
+          <h2 className="text-lg font-black text-paw-teal mb-4">Specializations</h2>
           <div className="flex flex-wrap gap-3">
             {(clinic.specializations || []).map((spec) => (
               <div
                 key={spec}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border font-medium capitalize text-sm ${SPEC_COLORS[spec] || 'bg-slate-600/40 text-slate-300 border-slate-500/30'}`}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl border font-bold capitalize text-sm ${SPEC_COLORS[spec] || 'bg-stone-50 text-stone-600 border-stone-200'}`}
               >
                 {spec === 'dogs' ? '🐕' : spec === 'cats' ? '🐈' : spec === 'birds' ? '🦜' : '🦎'}{' '}
                 {spec}
               </div>
             ))}
           </div>
-          <p className="text-slate-400 text-sm mt-4">
-            Click on a time slot below to book your appointment online.
+          <p className="text-stone-400 text-sm mt-4 font-medium">
+            Click on a time slot below to book your appointment.
           </p>
         </div>
       </div>
 
       {/* Weekly Slot Grid */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6 mb-8">
-        <h2 className="text-lg font-bold text-white mb-6">Available Appointments</h2>
+      <div className="bg-white border border-stone-100 rounded-3xl p-6 mb-8 shadow-sm">
+        <h2 className="text-lg font-black text-paw-teal mb-6">Available Appointments</h2>
         <div className="overflow-x-auto">
           <div className="grid grid-cols-7 gap-2 min-w-[600px]">
             {DAYS.map((day) => (
               <div key={day}>
-                <p className="text-xs font-bold text-slate-400 mb-2 text-center">{day.slice(0, 3)}</p>
+                <p className="text-xs font-bold text-stone-400 mb-2 text-center">{day.slice(0, 3)}</p>
                 <div className="space-y-1.5">
                   {slotsByDay[day].length === 0 && (
-                    <p className="text-xs text-slate-600 text-center py-2">—</p>
+                    <p className="text-xs text-stone-200 text-center py-2">—</p>
                   )}
                   {slotsByDay[day].map((slot, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleSlotClick(slot)}
                       disabled={slot.isBooked}
-                      className={`w-full text-xs py-1.5 px-2 rounded-lg font-medium transition-all ${
+                      className={`w-full text-xs py-1.5 px-2 rounded-xl font-bold transition-all ${
                         slot.isBooked
-                          ? 'bg-slate-700/50 text-slate-600 cursor-not-allowed'
-                          : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/40 cursor-pointer'
+                          ? 'bg-stone-100 text-stone-300 cursor-not-allowed'
+                          : 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-500 hover:text-white cursor-pointer'
                       }`}
                     >
                       {slot.time}
@@ -187,8 +187,8 @@ const VetProfile = () => {
           </div>
         </div>
         {!user && (
-          <p className="text-center text-slate-400 text-sm mt-4">
-            <button onClick={() => navigate('/login')} className="text-rose-400 hover:underline font-medium">Sign in</button> to book a slot
+          <p className="text-center text-stone-400 text-sm mt-4 font-medium">
+            <button onClick={() => navigate('/login')} className="text-paw-teal hover:underline font-bold">Sign in</button> to book a slot
           </p>
         )}
       </div>
@@ -196,18 +196,13 @@ const VetProfile = () => {
       {/* Booking Modal */}
       {showModal && selectedSlot && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowModal(false)} />
-          <div className="relative bg-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8 w-full max-w-lg shadow-2xl">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl transition-colors"
-            >✕</button>
-            <h3 className="text-xl font-bold text-white mb-6">Book Appointment</h3>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowModal(false)} />
+          <div className="relative z-10 w-full max-w-lg">
             <BookingForm
               clinic={clinic}
               preDate=""
               preTime={selectedSlot.time}
-              onSuccess={() => {}}
+              onSuccess={() => setShowModal(false)}
               onClose={() => setShowModal(false)}
             />
           </div>

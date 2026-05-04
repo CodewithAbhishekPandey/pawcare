@@ -2,11 +2,31 @@ services:
   - type: web
     name: pawcare-backend
     env: node
+    region: singapore
     rootDir: server
     buildCommand: npm install
     startCommand: node index.js
+    plan: free
     envVars:
-      - key: CLIENT_URL
-        sync: false # You can add this later once Vercel is done
+      - key: NODE_ENV
+        value: production
       - key: PORT
-        value: "5000"
+        value: "10000"
+      - key: JWT_SECRET
+        value: pawcare_super_secret_jwt_key_2024_production
+      - key: MONGO_URI
+        value: ""
+        # Leave blank to use in-memory MongoDB (auto-seeded)
+        # Or set to your MongoDB Atlas URI: mongodb+srv://user:pass@cluster.mongodb.net/pawcare
+      - key: CLIENT_URL
+        value: https://pawcare.vercel.app
+        # Update this to your actual Vercel URL after first deploy
+      - key: RAZORPAY_KEY_ID
+        value: rzp_test_placeholder
+        # Replace with real key for live payments
+      - key: RAZORPAY_KEY_SECRET
+        value: placeholder_secret
+        # Replace with real secret for live payments
+      - key: MONGOMS_VERSION
+        value: "7.0.14"
+        # Required for Render's Debian 12 environment

@@ -34,8 +34,22 @@ initConsultQueue(io);
 app.set('io', io);
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000',
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: true,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
 }));
 app.use(express.json());
@@ -79,14 +93,23 @@ async function startServer() {
   try {
     let mongoUri = process.env.MONGO_URI;
 
-    // If no external MongoDB, use in-memory
-    if (!mongoUri || mongoUri.includes('127.0.0.1') || mongoUri.includes('localhost')) {
+    // Use in-memory MongoDB if no real URI is configured
+    const useInMemory = !mongoUri
+      || mongoUri.trim() === ''
+      || mongoUri.includes('127.0.0.1')
+      || mongoUri.includes('localhost');
+
+    if (useInMemory) {
       const { MongoMemoryServer } = require('mongodb-memory-server');
-      // Fix for Render (Debian 12) which requires MongoDB >= 7.0.3
-      process.env.MONGOMS_VERSION = '7.0.14'; 
+      // Required for Render (Debian 12) — MongoDB 7.0.14
+      if (!process.env.MONGOMS_VERSION) {
+        process.env.MONGOMS_VERSION = '7.0.14';
+      }
       const mongoServer = await MongoMemoryServer.create();
       mongoUri = mongoServer.getUri();
-      console.log('⚡ Using In-Memory MongoDB (development mode)');
+      console.log('⚡ Using In-Memory MongoDB (will auto-seed)');
+    } else {
+      console.log('🌍 Using external MongoDB (Atlas / production)');
     }
 
     await mongoose.connect(mongoUri);

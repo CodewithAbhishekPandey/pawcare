@@ -18,6 +18,9 @@ import VetProfile from './pages/VetProfile';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
 import MyAppointments from './pages/MyAppointments';
+import Orders from './pages/Orders';
+import Clinics from './pages/Clinics';
+import BookAppointment from './pages/BookAppointment';
 import OwnerDashboard from './pages/OwnerDashboard';
 import VetDashboard from './pages/VetDashboard';
 import InstantConsult from './pages/InstantConsult';
@@ -48,6 +51,7 @@ function AppRoutes({ settings }) {
           <Route path="/vets" element={<VetList />} />
           <Route path="/vets/:id" element={<VetProfile />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/clinics" element={<Clinics />} />
           <Route path="/instant-consult" element={<InstantConsult />} />
 
           {/* Admin Routes */}
@@ -57,6 +61,8 @@ function AppRoutes({ settings }) {
           <Route element={<PrivateRoute />}>
             <Route path="/cart" element={<Cart />} />
             <Route path="/appointments" element={<MyAppointments />} />
+            <Route path="/appointments/new" element={<BookAppointment />} />
+            <Route path="/orders" element={<Orders />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/waiting-room/:sessionId" element={<WaitingRoom />} />
             <Route path="/video/:roomId" element={<VideoRoom />} />
@@ -66,9 +72,9 @@ function AppRoutes({ settings }) {
           <Route path="*" element={
             <div className="text-center py-32">
               <p className="text-6xl mb-4">🐾</p>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-3">Page Not Found</h2>
-              <p className="text-slate-400 mb-8">Looks like this trail leads nowhere.</p>
-              <a href="/" className="px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-semibold transition-colors">
+              <h2 className="text-3xl font-black text-paw-teal mb-3">Page Not Found</h2>
+              <p className="text-stone-500 font-medium mb-8">Looks like this trail leads nowhere.</p>
+              <a href="/" className="px-6 py-3 bg-paw-teal hover:bg-opacity-90 text-white rounded-full font-bold shadow-md transition-all">
                 Go Home
               </a>
             </div>

@@ -37,13 +37,12 @@ const VetList = () => {
   };
 
   useEffect(() => {
+    const fallbackLat = 28.4595;
+    const fallbackLng = 77.0266;
     if (!navigator.geolocation) {
-      // Fallback: use Gurugram center
-      const lat = 28.4595;
-      const lng = 77.0266;
-      setUserLat(lat);
-      setUserLng(lng);
-      fetchVets(lat, lng, radius, petType);
+      setUserLat(fallbackLat);
+      setUserLng(fallbackLng);
+      fetchVets(fallbackLat, fallbackLng, radius, petType);
       return;
     }
     navigator.geolocation.getCurrentPosition(
@@ -55,12 +54,9 @@ const VetList = () => {
         fetchVets(lat, lng, radius, petType);
       },
       () => {
-        // Geolocation denied — use Gurugram center as fallback
-        const lat = 28.4595;
-        const lng = 77.0266;
-        setUserLat(lat);
-        setUserLng(lng);
-        fetchVets(lat, lng, radius, petType);
+        setUserLat(fallbackLat);
+        setUserLng(fallbackLng);
+        fetchVets(fallbackLat, fallbackLng, radius, petType);
       }
     );
   }, []);
@@ -81,15 +77,15 @@ const VetList = () => {
   const displayed = openNow ? clinics.filter(isOpenNow) : clinics;
 
   return (
-    <div>
+    <div className="bg-paw-cream min-h-screen pb-24">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-extrabold text-white mb-2">Find Vets Near You</h1>
-        <p className="text-slate-400">Top-rated veterinary clinics in Gurugram, sorted by distance</p>
+        <h1 className="text-4xl font-serif font-black text-paw-teal mb-2">Find Vets Near You 🐾</h1>
+        <p className="text-stone-500 font-medium">Top-rated veterinary clinics in Gurugram, sorted by distance</p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 mb-8 p-4 bg-slate-800/50 border border-slate-700/50 rounded-2xl">
+      <div className="flex flex-wrap gap-3 mb-8 p-4 bg-white border border-stone-100 rounded-3xl shadow-sm">
         {/* Pet type */}
         <div className="flex flex-wrap gap-2">
           {FILTERS.petType.map((t) => (
@@ -99,10 +95,10 @@ const VetList = () => {
                 setPetType(t);
                 handleFilterChange(t, radius);
               }}
-              className={`px-3 py-1.5 rounded-xl text-sm font-medium capitalize transition-all ${
+              className={`px-3 py-1.5 rounded-full text-sm font-bold capitalize transition-all border ${
                 petType === t
-                  ? 'bg-rose-500 text-white'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  ? 'bg-paw-teal text-white border-paw-teal'
+                  : 'bg-white text-stone-600 border-stone-200 hover:border-paw-teal hover:text-paw-teal'
               }`}
             >
               {t === 'all' ? 'All Pets' : t.charAt(0).toUpperCase() + t.slice(1)}
@@ -118,7 +114,7 @@ const VetList = () => {
             setRadius(r);
             handleFilterChange(petType, r);
           }}
-          className="px-3 py-1.5 bg-slate-700 text-slate-300 border border-slate-600 rounded-xl text-sm focus:outline-none"
+          className="px-3 py-1.5 bg-white text-stone-600 border border-stone-200 rounded-full text-sm font-medium focus:outline-none focus:border-paw-teal transition-colors"
         >
           {FILTERS.radius.map((r) => (
             <option key={r.value} value={r.value}>{r.label}</option>
@@ -128,11 +124,13 @@ const VetList = () => {
         {/* Open now toggle */}
         <button
           onClick={() => setOpenNow((o) => !o)}
-          className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
-            openNow ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+          className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 border ${
+            openNow
+              ? 'bg-emerald-500 text-white border-emerald-500'
+              : 'bg-white text-stone-600 border-stone-200 hover:border-emerald-400 hover:text-emerald-600'
           }`}
         >
-          <span className={`w-2 h-2 rounded-full ${openNow ? 'bg-white' : 'bg-slate-500'}`} />
+          <span className={`w-2 h-2 rounded-full ${openNow ? 'bg-white' : 'bg-stone-300'}`} />
           Open Now
         </button>
       </div>
@@ -141,7 +139,7 @@ const VetList = () => {
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-72 bg-slate-800/40 rounded-2xl animate-pulse" />
+            <div key={i} className="h-72 bg-stone-100 rounded-3xl animate-pulse" />
           ))}
         </div>
       )}
@@ -150,19 +148,19 @@ const VetList = () => {
       {!loading && error && (
         <div className="text-center py-16">
           <p className="text-4xl mb-4">⚠️</p>
-          <p className="text-white font-medium">{error}</p>
+          <p className="text-paw-teal font-bold">{error}</p>
         </div>
       )}
 
-      {/* Results */}
+      {/* Empty */}
       {!loading && !error && displayed.length === 0 && (
         <div className="text-center py-20">
           <p className="text-5xl mb-4">🏥</p>
-          <h2 className="text-2xl font-bold text-white mb-2">No clinics found</h2>
-          <p className="text-slate-400 mb-6">Try expanding your radius or changing the pet type filter.</p>
+          <h2 className="text-2xl font-bold text-paw-teal mb-2">No clinics found</h2>
+          <p className="text-stone-500 mb-6">Try expanding your radius or changing the pet type filter.</p>
           <button
             onClick={() => { setPetType('all'); setRadius(10000); handleFilterChange('all', 10000); }}
-            className="px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl transition-colors"
+            className="px-6 py-3 bg-paw-teal hover:bg-opacity-90 text-white font-bold rounded-full transition-all shadow-md"
           >
             Show All Clinics
           </button>
@@ -171,7 +169,7 @@ const VetList = () => {
 
       {!loading && !error && displayed.length > 0 && (
         <>
-          <p className="text-slate-400 text-sm mb-4">{displayed.length} clinic{displayed.length !== 1 ? 's' : ''} found</p>
+          <p className="text-stone-400 text-sm mb-4 font-medium">{displayed.length} clinic{displayed.length !== 1 ? 's' : ''} found nearby</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayed.map((clinic) => (
               <VetCard key={clinic._id} clinic={clinic} userLat={userLat} userLng={userLng} />

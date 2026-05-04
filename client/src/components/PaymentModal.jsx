@@ -22,17 +22,16 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [step, setStep] = useState('form'); // 'form' | 'paying'
+  const [step, setStep] = useState('form');
 
   useEffect(() => {
     loadRazorpayScript().then(setScriptLoaded);
-    // Prevent background scroll
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
 
   const handlePayment = useCallback(async () => {
-    if (!petName.trim()) { setError('Please enter your pet\'s name'); return; }
+    if (!petName.trim()) { setError("Please enter your pet's name"); return; }
     if (!issue.trim()) { setError('Please briefly describe the issue'); return; }
     if (!scriptLoaded) { setError('Payment gateway not loaded. Please refresh.'); return; }
 
@@ -51,7 +50,6 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
       const { orderId, amount, currency, sessionId, key, vetName, isMock } = data.data;
 
       if (isMock) {
-        // Skip Razorpay and verify immediately
         await api.post('/consult/verify-payment', {
           sessionId,
           razorpay_order_id: orderId,
@@ -72,10 +70,9 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
         description: `Teleconsult with ${vetName}`,
         order_id: orderId,
         prefill: { name: '', email: '', contact: '' },
-        theme: { color: '#f43f5e' },
+        theme: { color: '#0f4c5c' },
         handler: async (response) => {
           try {
-            // Verify payment on server
             await api.post('/consult/verify-payment', {
               sessionId,
               razorpay_order_id: response.razorpay_order_id,
@@ -106,49 +103,51 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
     }
   }, [petName, petType, issue, vet, scriptLoaded, onPaymentSuccess]);
 
+  const inputCls = "w-full bg-stone-50 border border-stone-200 text-paw-teal placeholder-stone-400 rounded-2xl px-4 py-3 focus:outline-none focus:border-paw-teal focus:ring-2 focus:ring-paw-teal/10 transition-all font-medium";
+
   const modal = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }}
+      style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
-        className="bg-slate-900 border border-slate-700/60 rounded-3xl w-full max-w-md shadow-2xl shadow-black/50"
+        className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-stone-100"
         style={{ animation: 'slideUp 0.25s ease-out' }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 pb-4 border-b border-slate-700/40">
+        <div className="flex items-center justify-between p-6 pb-4 border-b border-stone-100">
           <div>
-            <h2 className="text-xl font-bold text-white">Book Instant Consult</h2>
-            <p className="text-slate-400 text-sm mt-0.5">Video consultation · 15–30 minutes</p>
+            <h2 className="text-xl font-black text-paw-teal">Book Instant Consult</h2>
+            <p className="text-stone-500 text-sm mt-0.5 font-medium">Video consultation · 15–30 minutes</p>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors flex items-center justify-center text-lg"
+            className="w-9 h-9 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-400 hover:text-paw-teal transition-colors flex items-center justify-center text-lg"
           >
             ✕
           </button>
         </div>
 
         {/* Vet summary */}
-        <div className="mx-6 mt-5 p-4 bg-slate-800/60 border border-slate-700/40 rounded-2xl flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+        <div className="mx-6 mt-5 p-4 bg-stone-50 border border-stone-100 rounded-2xl flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-paw-teal flex items-center justify-center text-white font-black text-lg flex-shrink-0">
             {vet.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white font-semibold">{vet.name}</p>
-            <p className="text-slate-400 text-sm">{vet.specializations?.slice(0, 2).join(', ')}</p>
+            <p className="text-paw-teal font-black">{vet.name}</p>
+            <p className="text-stone-400 text-sm font-medium">{vet.specializations?.slice(0, 2).join(', ')}</p>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="text-emerald-400 font-bold text-lg">₹{vet.consultFee}</p>
-            <p className="text-slate-500 text-xs">per session</p>
+            <p className="text-emerald-700 font-black text-lg">₹{vet.consultFee}</p>
+            <p className="text-stone-400 text-xs font-medium">per session</p>
           </div>
         </div>
 
         {/* Form */}
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-slate-300 text-sm font-medium mb-1.5" htmlFor="modal-pet-name">
+            <label className="block text-stone-700 text-sm font-bold mb-1.5" htmlFor="modal-pet-name">
               Pet's Name *
             </label>
             <input
@@ -157,27 +156,27 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
               value={petName}
               onChange={(e) => setPetName(e.target.value)}
               placeholder="e.g. Bruno"
-              className="w-full bg-slate-800/80 border border-slate-700/60 text-white placeholder-slate-500 rounded-xl px-4 py-3 focus:outline-none focus:border-rose-500/70 focus:ring-2 focus:ring-rose-500/20 transition-all"
+              className={inputCls}
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 text-sm font-medium mb-1.5" htmlFor="modal-pet-type">
+            <label className="block text-stone-700 text-sm font-bold mb-1.5" htmlFor="modal-pet-type">
               Pet Type *
             </label>
             <select
               id="modal-pet-type"
               value={petType}
               onChange={(e) => setPetType(e.target.value)}
-              className="w-full bg-slate-800/80 border border-slate-700/60 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-rose-500/70 focus:ring-2 focus:ring-rose-500/20 transition-all"
+              className={inputCls}
             >
               {PET_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
 
           <div>
-            <label className="block text-slate-300 text-sm font-medium mb-1.5" htmlFor="modal-issue">
-              Describe the issue * <span className="text-slate-500 font-normal">({200 - issue.length} chars left)</span>
+            <label className="block text-stone-700 text-sm font-bold mb-1.5" htmlFor="modal-issue">
+              Describe the issue * <span className="text-stone-300 font-normal">({200 - issue.length} chars left)</span>
             </label>
             <textarea
               id="modal-issue"
@@ -185,13 +184,13 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
               onChange={(e) => setIssue(e.target.value.slice(0, 200))}
               placeholder="e.g. My dog has been sneezing a lot and has watery eyes since yesterday..."
               rows={3}
-              className="w-full bg-slate-800/80 border border-slate-700/60 text-white placeholder-slate-500 rounded-xl px-4 py-3 focus:outline-none focus:border-rose-500/70 focus:ring-2 focus:ring-rose-500/20 transition-all resize-none"
+              className={inputCls + ' resize-none'}
             />
           </div>
 
           {error && (
-            <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-xl">
-              <span className="text-red-400 text-sm">⚠️ {error}</span>
+            <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-2xl">
+              <span className="text-red-600 text-sm font-medium">⚠️ {error}</span>
             </div>
           )}
 
@@ -199,7 +198,7 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
             id="pay-consult-btn"
             onClick={handlePayment}
             disabled={loading || step === 'paying'}
-            className="w-full py-4 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-400 hover:to-rose-500 text-white font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-rose-500/20 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+            className="w-full py-4 bg-paw-teal hover:bg-opacity-90 text-white font-black rounded-2xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-paw-teal/20 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
           >
             {loading ? (
               <>
@@ -214,7 +213,7 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
             )}
           </button>
 
-          <p className="text-center text-slate-500 text-xs">
+          <p className="text-center text-stone-400 text-xs font-medium">
             Secured by Razorpay · UPI, Cards, NetBanking accepted
           </p>
         </div>

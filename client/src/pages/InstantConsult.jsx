@@ -17,7 +17,6 @@ const InstantConsult = () => {
   const [showPayment, setShowPayment] = useState(false);
   const [fetching, setFetching] = useState(false);
 
-  // Fetch available vets from REST
   const fetchVets = useCallback(async () => {
     setFetching(true);
     try {
@@ -31,9 +30,7 @@ const InstantConsult = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchVets();
-  }, [fetchVets]);
+  useEffect(() => { fetchVets(); }, [fetchVets]);
 
   // Real-time socket updates
   useEffect(() => {
@@ -41,7 +38,6 @@ const InstantConsult = () => {
 
     const onVetOnline = (vetData) => {
       setVets((prev) => {
-        // Avoid duplicates
         if (prev.some((v) => v._id === vetData.vetId)) return prev;
         return [...prev, {
           _id: vetData.vetId,
@@ -69,10 +65,7 @@ const InstantConsult = () => {
   }, [socket]);
 
   const handleConsultNow = (vet) => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
+    if (!user) { navigate('/login'); return; }
     setSelectedVet(vet);
     setShowPayment(true);
   };
@@ -85,17 +78,17 @@ const InstantConsult = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto pb-24">
       {/* Header */}
       <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-rose-500/10 border border-rose-500/20 rounded-full text-rose-400 text-sm font-medium mb-4">
-          <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-paw-orange/10 border border-paw-orange/20 rounded-full text-paw-orange text-sm font-bold mb-4">
+          <span className="w-2 h-2 rounded-full bg-paw-orange animate-pulse" />
           Live · Updated in real-time
         </div>
-        <h1 className="text-4xl font-extrabold text-white mb-3">
+        <h1 className="text-4xl font-serif font-black text-paw-teal mb-3">
           Instant Vet Consult 📹
         </h1>
-        <p className="text-slate-400 text-lg max-w-lg mx-auto">
+        <p className="text-stone-500 font-medium text-lg max-w-lg mx-auto">
           Connect with a licensed vet via video call in minutes — no appointment needed.
           Pay once, get expert advice instantly.
         </p>
@@ -108,10 +101,10 @@ const InstantConsult = () => {
           { icon: '💳', step: '2', label: 'Pay securely', sub: 'One-time consult fee' },
           { icon: '📹', step: '3', label: 'Start video call', sub: 'Matched instantly' },
         ].map(({ icon, step, label, sub }) => (
-          <div key={step} className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-4 text-center">
+          <div key={step} className="bg-white border border-stone-100 rounded-3xl p-4 text-center shadow-sm">
             <div className="text-2xl mb-2">{icon}</div>
-            <p className="text-white font-semibold text-sm">{label}</p>
-            <p className="text-slate-500 text-xs mt-0.5">{sub}</p>
+            <p className="text-paw-teal font-bold text-sm">{label}</p>
+            <p className="text-stone-400 text-xs mt-0.5 font-medium">{sub}</p>
           </div>
         ))}
       </div>
@@ -119,10 +112,10 @@ const InstantConsult = () => {
       {/* Refresh + count row */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h2 className="text-white font-bold text-xl">
+          <h2 className="text-paw-teal font-black text-xl">
             Available Vets
             {vets.length > 0 && (
-              <span className="ml-2.5 px-2.5 py-0.5 bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 rounded-full text-sm font-semibold">
+              <span className="ml-2.5 px-2.5 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-sm font-bold">
                 {vets.length} online
               </span>
             )}
@@ -132,7 +125,7 @@ const InstantConsult = () => {
           id="refresh-vets-btn"
           onClick={fetchVets}
           disabled={fetching}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-800/60 border border-slate-700/50 text-slate-300 hover:text-white hover:border-slate-600 rounded-xl text-sm font-medium transition-all disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 text-stone-500 hover:text-paw-teal hover:border-paw-teal rounded-full text-sm font-bold transition-all disabled:opacity-50 shadow-sm"
         >
           <span className={fetching ? 'animate-spin inline-block' : 'inline-block'}>↻</span>
           Refresh
@@ -143,17 +136,17 @@ const InstantConsult = () => {
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 bg-slate-800/40 rounded-2xl animate-pulse" />
+            <div key={i} className="h-40 bg-stone-100 rounded-3xl animate-pulse" />
           ))}
         </div>
       ) : vets.length === 0 ? (
-        <div className="text-center py-20 bg-slate-800/30 border border-slate-700/40 rounded-3xl">
+        <div className="text-center py-20 bg-white border border-stone-100 rounded-3xl shadow-sm">
           <p className="text-5xl mb-4">😔</p>
-          <h3 className="text-white font-bold text-xl mb-2">No vets available right now</h3>
-          <p className="text-slate-400 mb-6">Our vets might be in a call or taking a break. Check back in a few minutes.</p>
+          <h3 className="text-paw-teal font-black text-xl mb-2">No vets available right now</h3>
+          <p className="text-stone-400 mb-6 font-medium">Our vets might be in a call or taking a break. Check back in a few minutes.</p>
           <button
             onClick={fetchVets}
-            className="px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white font-semibold rounded-xl transition-colors"
+            className="px-6 py-3 bg-paw-teal hover:bg-opacity-90 text-white font-bold rounded-full transition-all shadow-md"
           >
             Try Again
           </button>

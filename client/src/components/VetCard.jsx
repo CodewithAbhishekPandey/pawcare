@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
 
 // Haversine distance in km
 function haversine(lat1, lng1, lat2, lng2) {
@@ -16,11 +15,11 @@ function haversine(lat1, lng1, lat2, lng2) {
 }
 
 const SPEC_COLORS = {
-  dogs: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  cats: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-  exotic: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  birds: 'bg-sky-500/20 text-sky-300 border-sky-500/30',
-  default: 'bg-slate-600/40 text-slate-300 border-slate-500/30',
+  dogs: 'bg-amber-50 text-amber-700 border-amber-200',
+  cats: 'bg-purple-50 text-purple-700 border-purple-200',
+  exotic: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  birds: 'bg-sky-50 text-sky-700 border-sky-200',
+  default: 'bg-stone-50 text-stone-600 border-stone-200',
 };
 
 const VetCard = ({ clinic, userLat, userLng }) => {
@@ -37,18 +36,18 @@ const VetCard = ({ clinic, userLat, userLng }) => {
     .slice(0, 3);
 
   return (
-    <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6 hover:border-rose-500/40 hover:shadow-xl hover:shadow-rose-500/5 transition-all duration-300 flex flex-col gap-4 group">
+    <div className="bg-white border border-stone-100 rounded-3xl p-6 hover:border-paw-teal/40 hover:shadow-xl hover:shadow-paw-teal/5 transition-all duration-300 flex flex-col gap-4 group shadow-sm">
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
-          <h3 className="font-bold text-white text-lg group-hover:text-rose-400 transition-colors line-clamp-1">
+          <h3 className="font-bold text-paw-teal text-lg group-hover:text-paw-orange transition-colors line-clamp-1">
             {clinic.name}
           </h3>
-          <p className="text-slate-400 text-sm mt-0.5 line-clamp-1">{clinic.address}</p>
+          <p className="text-stone-400 text-sm mt-0.5 line-clamp-1">{clinic.address}</p>
         </div>
-        <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 rounded-lg px-2 py-1 flex-shrink-0">
-          <span className="text-amber-400 text-xs">★</span>
-          <span className="text-amber-300 text-xs font-bold">{rating}</span>
+        <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 rounded-xl px-2 py-1 flex-shrink-0">
+          <span className="text-amber-500 text-xs">★</span>
+          <span className="text-amber-600 text-xs font-bold">{rating}</span>
         </div>
       </div>
 
@@ -65,7 +64,7 @@ const VetCard = ({ clinic, userLat, userLng }) => {
       </div>
 
       {/* Meta info */}
-      <div className="flex items-center gap-4 text-xs text-slate-400">
+      <div className="flex items-center gap-4 text-xs text-stone-400 font-medium">
         {distance && (
           <span className="flex items-center gap-1">
             📍 {distance} km away
@@ -77,7 +76,7 @@ const VetCard = ({ clinic, userLat, userLng }) => {
           </span>
         )}
         {clinic.isVerified && (
-          <span className="text-emerald-400 flex items-center gap-1">✓ Verified</span>
+          <span className="text-emerald-600 flex items-center gap-1">✓ Verified</span>
         )}
       </div>
 
@@ -87,7 +86,7 @@ const VetCard = ({ clinic, userLat, userLng }) => {
           {availableSlots.map((slot, idx) => (
             <span
               key={idx}
-              className="text-xs px-2.5 py-1 bg-emerald-500/15 text-emerald-300 border border-emerald-500/25 rounded-full font-medium"
+              className="text-xs px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full font-medium"
             >
               {slot.day} {slot.time}
             </span>
@@ -98,7 +97,7 @@ const VetCard = ({ clinic, userLat, userLng }) => {
       {/* Action */}
       <button
         onClick={() => navigate(`/vets/${clinic._id}`)}
-        className="mt-auto w-full py-2.5 bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-rose-500/20 transition-all"
+        className="mt-auto w-full py-2.5 bg-paw-teal hover:bg-opacity-90 text-white font-bold rounded-2xl text-sm shadow-md shadow-paw-teal/20 transition-all active:scale-95"
       >
         Book Now →
       </button>

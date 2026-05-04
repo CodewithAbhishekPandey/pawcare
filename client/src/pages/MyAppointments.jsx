@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
 const STATUS_STYLES = {
-  pending: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-  confirmed: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-  completed: 'bg-slate-600/40 text-slate-400 border border-slate-600/40',
-  cancelled: 'bg-red-500/20 text-red-300 border border-red-500/30',
+  pending: 'bg-amber-50 text-amber-700 border border-amber-200',
+  confirmed: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  completed: 'bg-stone-100 text-stone-500 border border-stone-200',
+  cancelled: 'bg-red-50 text-red-600 border border-red-200',
 };
 
 const AppointmentCard = ({ apt, onCancel }) => {
@@ -22,30 +22,30 @@ const AppointmentCard = ({ apt, onCancel }) => {
   };
 
   return (
-    <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6 flex flex-col sm:flex-row gap-4">
+    <div className="bg-white border border-stone-100 rounded-3xl p-6 flex flex-col sm:flex-row gap-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex-1">
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div>
-            <h3 className="font-bold text-white text-lg">{apt.clinicRef?.name || 'Clinic'}</h3>
-            <p className="text-slate-400 text-sm">{apt.clinicRef?.address}</p>
+            <h3 className="font-bold text-paw-teal text-lg">{apt.clinicRef?.name || 'Clinic'}</h3>
+            <p className="text-stone-400 text-sm">{apt.clinicRef?.address}</p>
           </div>
-          <span className={`text-xs px-3 py-1 rounded-full font-semibold capitalize ${STATUS_STYLES[apt.status]}`}>
+          <span className={`text-xs px-3 py-1 rounded-full font-bold capitalize ${STATUS_STYLES[apt.status]}`}>
             {apt.status}
           </span>
         </div>
-        <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-300">
+        <div className="mt-3 flex flex-wrap gap-4 text-sm text-stone-600 font-medium">
           <span>📅 {new Date(apt.date).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
           <span>🕐 {apt.timeSlot}</span>
           <span>🐾 {apt.petName} ({apt.petType})</span>
         </div>
-        {apt.notes && <p className="mt-2 text-slate-500 text-sm italic">{apt.notes}</p>}
+        {apt.notes && <p className="mt-2 text-stone-400 text-sm italic">{apt.notes}</p>}
       </div>
       {apt.status === 'pending' && !isPast && (
         <div className="flex sm:flex-col items-start gap-2">
           <button
             onClick={handleCancel}
             disabled={cancelling}
-            className="px-4 py-2 border border-red-500/40 text-red-400 hover:bg-red-500/10 rounded-xl text-sm font-medium transition-colors disabled:opacity-50"
+            className="px-4 py-2 border border-red-200 text-red-500 hover:bg-red-50 rounded-2xl text-sm font-bold transition-colors disabled:opacity-50"
           >
             {cancelling ? 'Cancelling…' : 'Cancel'}
           </button>
@@ -57,7 +57,6 @@ const AppointmentCard = ({ apt, onCancel }) => {
 
 const MyAppointments = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -83,8 +82,8 @@ const MyAppointments = () => {
     return (
       <div className="text-center py-20">
         <p className="text-5xl mb-4">🔒</p>
-        <h2 className="text-2xl font-bold text-white mb-2">Sign in to view appointments</h2>
-        <Link to="/login" className="mt-4 inline-block px-6 py-3 bg-rose-500 text-white font-bold rounded-xl">Sign In</Link>
+        <h2 className="text-2xl font-bold text-paw-teal mb-2">Sign in to view appointments</h2>
+        <Link to="/login" className="mt-4 inline-block px-6 py-3 bg-paw-teal text-white font-bold rounded-full shadow-md">Sign In</Link>
       </div>
     );
   }
@@ -94,20 +93,20 @@ const MyAppointments = () => {
 
   if (loading) return (
     <div className="space-y-4">
-      {[1, 2, 3].map((i) => <div key={i} className="h-32 bg-slate-800/40 rounded-2xl animate-pulse" />)}
+      {[1, 2, 3].map((i) => <div key={i} className="h-32 bg-stone-100 rounded-3xl animate-pulse" />)}
     </div>
   );
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-4xl font-extrabold text-white mb-8">My Appointments</h1>
+      <h1 className="text-4xl font-serif font-black text-paw-teal mb-8">My Appointments 📅</h1>
 
       {appointments.length === 0 && (
         <div className="text-center py-20">
           <p className="text-5xl mb-4">📅</p>
-          <h2 className="text-xl font-bold text-white mb-2">No appointments yet</h2>
-          <p className="text-slate-400 mb-6">Book your first vet appointment today.</p>
-          <Link to="/vets" className="px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl transition-colors">
+          <h2 className="text-xl font-bold text-paw-teal mb-2">No appointments yet</h2>
+          <p className="text-stone-500 mb-6">Book your first vet appointment today.</p>
+          <Link to="/vets" className="px-6 py-3 bg-paw-teal hover:bg-opacity-90 text-white font-bold rounded-full transition-all shadow-md">
             Find a Vet
           </Link>
         </div>
@@ -115,8 +114,8 @@ const MyAppointments = () => {
 
       {upcoming.length > 0 && (
         <section className="mb-8">
-          <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <h2 className="text-xl font-bold text-paw-teal mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             Upcoming
           </h2>
           <div className="space-y-4">
@@ -127,7 +126,7 @@ const MyAppointments = () => {
 
       {past.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold text-slate-400 mb-4">Past</h2>
+          <h2 className="text-xl font-bold text-stone-400 mb-4">Past</h2>
           <div className="space-y-4">
             {past.map((apt) => <AppointmentCard key={apt._id} apt={apt} onCancel={handleCancel} />)}
           </div>

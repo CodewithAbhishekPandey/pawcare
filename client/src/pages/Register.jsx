@@ -29,79 +29,73 @@ const Register = () => {
     return (
       <div className="text-center mt-20">
         <p className="text-5xl mb-4">🐾</p>
-        <p className="text-xl font-medium text-white">You're already logged in, {user.name}!</p>
-        <Link to="/dashboard" className="mt-6 inline-block px-6 py-3 bg-rose-500 text-white rounded-xl font-semibold">Go to Dashboard</Link>
+        <p className="text-xl font-bold text-paw-teal">You're already logged in, {user.name}!</p>
+        <Link to="/dashboard" className="mt-6 inline-block px-6 py-3 bg-paw-teal text-white rounded-full font-bold shadow-md">Go to Dashboard</Link>
       </div>
     );
   }
 
+  const inputCls = "block w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl text-paw-teal placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-paw-teal/20 focus:border-paw-teal transition-all font-medium";
+  const labelCls = "block text-sm font-bold text-stone-700 mb-2 ml-1";
+
   return (
-    <div className="max-w-md mx-auto mt-16 bg-slate-800/50 backdrop-blur-xl p-8 rounded-2xl shadow-xl border border-slate-700/50">
-      <div className="text-center mb-8">
-        <span className="text-4xl">🐾</span>
-        <h1 className="text-3xl font-extrabold text-white mt-2">Create Account</h1>
-        <p className="text-slate-400 text-sm mt-1">Join PawCare — Gurugram's premier pet platform</p>
-      </div>
+    <div className="min-h-[80vh] flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white rounded-[2rem] shadow-xl border border-stone-100 p-8 sm:p-10">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-paw-yellow/30 mb-6">
+            <span className="text-4xl">🐾</span>
+          </div>
+          <h1 className="text-3xl font-black text-paw-teal">Create Account</h1>
+          <p className="text-stone-500 font-medium mt-2">Join PawCare — Gurugram's premier pet platform</p>
+        </div>
 
-      {error && (
-        <div className="mb-6 p-3 bg-red-500/20 border border-red-500/40 rounded-lg text-red-300 text-sm">{error}</div>
-      )}
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 text-sm flex items-center gap-2 font-medium">
+            <span>⚠️</span> {error}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Full Name</label>
-          <input
-            name="name" type="text" required value={form.name} onChange={handleChange}
-            placeholder="Rahul Sharma"
-            className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
-          <input
-            name="email" type="email" required value={form.email} onChange={handleChange}
-            placeholder="rahul@example.com"
-            className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Phone (optional)</label>
-          <input
-            name="phone" type="tel" value={form.phone} onChange={handleChange}
-            placeholder="+91 98765 43210"
-            className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">I am a...</label>
-          <select
-            name="role" value={form.role} onChange={handleChange}
-            className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className={labelCls}>Full Name</label>
+            <input name="name" type="text" required value={form.name} onChange={handleChange}
+              placeholder="Rahul Sharma" className={inputCls} />
+          </div>
+          <div>
+            <label className={labelCls}>Email Address</label>
+            <input name="email" type="email" required value={form.email} onChange={handleChange}
+              placeholder="rahul@example.com" className={inputCls} />
+          </div>
+          <div>
+            <label className={labelCls}>Phone (optional)</label>
+            <input name="phone" type="tel" value={form.phone} onChange={handleChange}
+              placeholder="+91 98765 43210" className={inputCls} />
+          </div>
+          <div>
+            <label className={labelCls}>I am a...</label>
+            <select name="role" value={form.role} onChange={handleChange} className={inputCls}>
+              <option value="pet_owner">Pet Owner</option>
+              <option value="vet">Veterinarian / Clinic Owner</option>
+            </select>
+          </div>
+          <div>
+            <label className={labelCls}>Password</label>
+            <input name="password" type="password" required value={form.password} onChange={handleChange}
+              placeholder="Min. 6 characters" className={inputCls} />
+          </div>
+          <button
+            type="submit" disabled={loading}
+            className="w-full mt-2 py-4 px-4 bg-paw-teal hover:bg-opacity-90 disabled:opacity-60 font-black text-lg rounded-2xl shadow-xl shadow-paw-teal/20 transition-all transform hover:-translate-y-1 active:scale-95 text-white"
           >
-            <option value="pet_owner">Pet Owner</option>
-            <option value="vet">Veterinarian / Clinic Owner</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Password</label>
-          <input
-            name="password" type="password" required value={form.password} onChange={handleChange}
-            placeholder="Min. 6 characters"
-            className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
-          />
-        </div>
-        <button
-          type="submit" disabled={loading}
-          className="w-full py-3 px-4 bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 disabled:opacity-60 font-bold text-lg rounded-xl shadow-lg transition-all transform active:scale-95 text-white"
-        >
-          {loading ? 'Creating account…' : 'Create Account'}
-        </button>
-      </form>
+            {loading ? 'Creating account…' : 'Create Account 🐾'}
+          </button>
+        </form>
 
-      <p className="text-center text-slate-400 text-sm mt-6">
-        Already have an account?{' '}
-        <Link to="/login" className="text-rose-400 hover:text-rose-300 font-semibold">Sign in</Link>
-      </p>
+        <p className="text-center text-stone-500 font-medium mt-8">
+          Already have an account?{' '}
+          <Link to="/login" className="text-paw-teal hover:text-paw-orange font-bold underline decoration-2 underline-offset-4 transition-colors">Sign in</Link>
+        </p>
+      </div>
     </div>
   );
 };

@@ -44,6 +44,7 @@ const Navbar = ({ settings = {} }) => {
             <NavLink to="/" className={desktopLinkCls} end>Home</NavLink>
             <NavLink to="/vets" className={desktopLinkCls}>Find Vets</NavLink>
             {settings.marketplace_enabled !== false && <NavLink to="/shop" className={desktopLinkCls}>Shop</NavLink>}
+            {settings.consult_enabled !== false && <NavLink to="/instant-consult" className={desktopLinkCls}>Consult</NavLink>}
             {user && <NavLink to="/appointments" className={desktopLinkCls}>Bookings</NavLink>}
           </nav>
 
@@ -123,9 +124,14 @@ const Navbar = ({ settings = {} }) => {
               <span className="text-2xl">🏪</span>
             </Link>
           )}
+          {settings.consult_enabled !== false && (
+            <Link to="/instant-consult" className={mobileLinkCls('/instant-consult')}>
+              <span className="text-2xl">📹</span>
+            </Link>
+          )}
           {user ? (
-             <Link to="/appointments" className={mobileLinkCls('/appointments')}>
-                <span className="text-2xl">🔖</span>
+             <Link to="/dashboard" className={mobileLinkCls('/dashboard')}>
+                <span className="text-2xl">👤</span>
              </Link>
           ) : (
              <Link to="/register" className={mobileLinkCls('/register')}>

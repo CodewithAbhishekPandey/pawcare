@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import api from '../api/axios';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 
 const PET_TYPES = ['Dog', 'Cat', 'Bird', 'Rabbit', 'Fish', 'Hamster', 'Other'];
 
@@ -34,7 +34,13 @@ const BookAppointment = () => {
   useEffect(() => {
     if (form.clinicRef) {
       const clinic = clinics.find((c) => c._id === form.clinicRef);
-      setSlots(clinic?.availableSlots || []);
+      const raw = clinic?.availableSlots || [];
+      // availableSlots may be objects {day, time, isBooked} or plain strings
+      const times = raw
+        .filter((s) => typeof s === 'string' ? s : !s.isBooked)
+        .map((s) => typeof s === 'string' ? s : s.time)
+        .filter(Boolean);
+      setSlots([...new Set(times)]);
       setForm((f) => ({ ...f, timeSlot: '' }));
     }
   }, [form.clinicRef, clinics]);
@@ -48,7 +54,7 @@ const BookAppointment = () => {
     try {
       await api.post('/appointments', form);
       setSuccess(true);
-      setTimeout(() => navigate('/appointments'), 1500);
+      setTimeout(() => navigate('/appointments'), 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to book appointment');
     } finally {
@@ -59,37 +65,45 @@ const BookAppointment = () => {
   if (!user) {
     return (
       <div className="text-center mt-20">
-        <p className="text-slate-400 text-lg mb-4">Please log in to book an appointment.</p>
-        <a href="/login" className="px-6 py-3 bg-rose-500 text-white rounded-xl font-semibold">Login</a>
+        <p className="text-5xl mb-4">🔒</p>
+        <p className="text-paw-teal font-bold text-lg mb-4">Please log in to book an appointment.</p>
+        <Link to="/login" className="px-6 py-3 bg-paw-teal text-white rounded-full font-bold shadow-md">Login</Link>
       </div>
     );
   }
 
   if (success) {
     return (
-      <div className="text-center mt-20 animate-pulse">
-        <p className="text-5xl mb-4">✅</p>
-        <h3 className="text-2xl font-bold text-white">Appointment Booked!</h3>
-        <p className="text-slate-400 mt-2">Redirecting to your appointments...</p>
+      <div className="text-center mt-20">
+        <div className="text-6xl mb-4">✅</div>
+        <h3 className="text-2xl font-black text-paw-teal">Appointment Booked!</h3>
+        <p className="text-stone-500 mt-2 font-medium">Redirecting to your appointments...</p>
       </div>
     );
   }
 
+  const inputCls = "block w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl text-paw-teal placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-paw-teal/10 focus:border-paw-teal transition-all font-medium";
+  const labelCls = "block text-sm font-bold text-stone-700 mb-2";
+
   return (
-    <div className="max-w-xl mx-auto">
-      <h2 className="text-3xl font-extrabold text-white mb-2">Book an Appointment</h2>
-      <p className="text-slate-400 mb-8">Schedule a visit for your furry friend</p>
+    <div className="max-w-xl mx-auto pb-24">
+      <div className="mb-8">
+        <h1 className="text-4xl font-serif font-black text-paw-teal mb-2">Book an Appointment 📅</h1>
+        <p className="text-stone-500 font-medium">Schedule a visit for your furry friend</p>
+      </div>
 
       {error && (
-        <div className="mb-6 p-3 bg-red-500/20 border border-red-500/40 rounded-lg text-red-300 text-sm">{error}</div>
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 text-sm font-medium">
+          ⚠️ {error}
+        </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-5 bg-slate-800/50 border border-slate-700/50 rounded-2xl p-8">
+      <form onSubmit={handleSubmit} className="space-y-5 bg-white border border-stone-100 rounded-3xl p-6 sm:p-8 shadow-sm">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Select Clinic</label>
+          <label className={labelCls}>Select Clinic</label>
           <select
             name="clinicRef" value={form.clinicRef} onChange={handleChange} required
-            className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+            className={inputCls}
           >
             <option value="">-- Choose a clinic --</option>
             {prefilledClinic && prefilledClinicName && (
@@ -105,19 +119,19 @@ const BookAppointment = () => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Date</label>
+            <label className={labelCls}>Date</label>
             <input
               name="date" type="date" required value={form.date} onChange={handleChange}
               min={new Date().toISOString().split('T')[0]}
-              className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+              className={inputCls}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Time Slot</label>
+            <label className={labelCls}>Time Slot</label>
             {slots.length > 0 ? (
               <select
                 name="timeSlot" value={form.timeSlot} onChange={handleChange} required
-                className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+                className={inputCls}
               >
                 <option value="">-- Pick slot --</option>
                 {slots.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -126,7 +140,7 @@ const BookAppointment = () => {
               <input
                 name="timeSlot" type="text" required value={form.timeSlot} onChange={handleChange}
                 placeholder="e.g. 10:00 AM"
-                className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+                className={inputCls}
               />
             )}
           </div>
@@ -134,18 +148,18 @@ const BookAppointment = () => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Pet Name</label>
+            <label className={labelCls}>Pet Name</label>
             <input
               name="petName" type="text" required value={form.petName} onChange={handleChange}
               placeholder="Bruno"
-              className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+              className={inputCls}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Pet Type</label>
+            <label className={labelCls}>Pet Type</label>
             <select
               name="petType" value={form.petType} onChange={handleChange}
-              className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+              className={inputCls}
             >
               {PET_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
@@ -153,19 +167,19 @@ const BookAppointment = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Notes (optional)</label>
+          <label className={labelCls}>Notes (optional)</label>
           <textarea
             name="notes" value={form.notes} onChange={handleChange} rows={3}
             placeholder="Describe symptoms or reason for visit..."
-            className="block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all resize-none"
+            className={inputCls + ' resize-none'}
           />
         </div>
 
         <button
           type="submit" disabled={loading}
-          className="w-full py-3 bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 disabled:opacity-60 font-bold text-lg rounded-xl shadow-lg transition-all transform active:scale-95"
+          className="w-full py-4 bg-paw-teal hover:bg-opacity-90 disabled:opacity-60 text-white font-black text-lg rounded-2xl shadow-lg shadow-paw-teal/20 transition-all transform active:scale-95"
         >
-          {loading ? 'Booking...' : 'Confirm Appointment'}
+          {loading ? 'Booking...' : '✓ Confirm Appointment'}
         </button>
       </form>
     </div>
