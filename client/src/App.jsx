@@ -18,6 +18,7 @@ import VetList from './pages/VetList';
 import VetProfile from './pages/VetProfile';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
+import Appointments from './pages/Appointments';
 import MyAppointments from './pages/MyAppointments';
 import Orders from './pages/Orders';
 import Clinics from './pages/Clinics';
@@ -62,6 +63,7 @@ function AppRoutes({ settings }) {
           <Route element={<PrivateRoute />}>
             <Route path="/cart" element={<Cart />} />
             <Route path="/appointments" element={<MyAppointments />} />
+            <Route path="/my-appointments" element={<Appointments />} />
             <Route path="/appointments/new" element={<BookAppointment />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -113,7 +115,7 @@ function App() {
         <CartProvider>
           <SocketProvider>
             <BrowserRouter>
-              <div className="min-h-screen bg-paw-pattern transition-colors duration-300">
+              <div className="min-h-screen bg-paw-pattern dark:bg-paw-dark transition-colors duration-300">
                 <AppRoutes settings={settings} />
               </div>
             </BrowserRouter>

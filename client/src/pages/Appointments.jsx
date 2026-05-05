@@ -4,10 +4,10 @@ import api from '../api/axios';
 import { Link } from 'react-router-dom';
 
 const STATUS_STYLES = {
-  pending: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-300',
-  confirmed: 'bg-blue-500/20 border-blue-500/30 text-blue-300',
-  completed: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300',
-  cancelled: 'bg-red-500/20 border-red-500/30 text-red-300',
+  pending: 'bg-amber-50 border-amber-200 text-amber-700',
+  confirmed: 'bg-emerald-50 border-emerald-200 text-emerald-700',
+  completed: 'bg-sky-50 border-sky-200 text-sky-700',
+  cancelled: 'bg-red-50 border-red-200 text-red-600',
 };
 
 const Appointments = () => {
@@ -16,33 +16,50 @@ const Appointments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const fetchAppointments = () => {
+    setLoading(true);
+    // Fixed: use /appointments/me (not /appointments)
+    api.get('/appointments/me')
+      .then((res) => setAppointments(res.data.data || []))
+      .catch(() => setError('Failed to load appointments. Make sure you are logged in.'))
+      .finally(() => setLoading(false));
+  };
+
   useEffect(() => {
     if (!user) return;
-    api.get('/appointments')
-      .then((res) => setAppointments(res.data))
-      .catch(() => setError('Failed to load appointments'))
-      .finally(() => setLoading(false));
+    fetchAppointments();
   }, [user]);
+
+  const handleCancel = async (id) => {
+    if (!window.confirm('Are you sure you want to cancel this appointment?')) return;
+    try {
+      await api.patch(`/appointments/${id}/status`, { status: 'cancelled' });
+      fetchAppointments();
+    } catch {
+      alert('Failed to cancel appointment.');
+    }
+  };
 
   if (!user) {
     return (
       <div className="text-center mt-20">
-        <p className="text-slate-400 text-lg mb-4">Please log in to view your appointments.</p>
-        <Link to="/login" className="px-6 py-3 bg-rose-500 text-white rounded-xl font-semibold">Login</Link>
+        <p className="text-5xl mb-4">🔒</p>
+        <p className="text-paw-teal font-bold text-lg mb-4">Please log in to view your appointments.</p>
+        <Link to="/login" className="px-6 py-3 bg-paw-teal text-white rounded-full font-bold shadow-md">Login</Link>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-10">
+    <div className="max-w-3xl mx-auto pb-24">
+      <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
         <div>
-          <h2 className="text-4xl font-extrabold text-white mb-1">My Appointments</h2>
-          <p className="text-slate-400">Track and manage your vet visits</p>
+          <h1 className="text-4xl font-serif font-black text-paw-teal mb-1">My Appointments</h1>
+          <p className="text-stone-500 font-medium">Track and manage your vet visits</p>
         </div>
         <Link
           to="/appointments/new"
-          className="px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl transition-colors shadow-lg"
+          className="px-5 py-2.5 bg-paw-teal hover:bg-opacity-90 text-white font-bold rounded-full transition-all shadow-md text-sm"
         >
           + Book New
         </Link>
@@ -50,22 +67,29 @@ const Appointments = () => {
 
       {loading && (
         <div className="space-y-4">
-          {[1, 2, 3].map((i) => <div key={i} className="h-28 bg-slate-800/40 rounded-2xl animate-pulse" />)}
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-32 bg-stone-100 rounded-3xl animate-pulse" />
+          ))}
         </div>
       )}
 
       {error && (
-        <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-xl text-red-300">{error}</div>
+        <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 font-medium">{error}</div>
       )}
 
       {!loading && !error && appointments.length === 0 && (
         <div className="text-center py-20">
           <p className="text-5xl mb-4">📅</p>
-          <p className="text-xl font-medium text-white mb-2">No appointments yet</p>
-          <p className="text-slate-500 text-sm mb-6">Book your pet's first visit with a trusted vet</p>
-          <Link to="/appointments/new" className="px-6 py-3 bg-rose-500 text-white rounded-xl font-semibold">
-            Book Now
-          </Link>
+          <p className="text-xl font-black text-paw-teal mb-2">No appointments yet</p>
+          <p className="text-stone-400 text-sm mb-6 font-medium">Book your pet's first visit with a trusted vet in Gurugram</p>
+          <div className="flex gap-3 justify-center">
+            <Link to="/vets" className="px-6 py-3 bg-paw-teal hover:bg-opacity-90 text-white rounded-full font-bold shadow-md transition-all">
+              Find a Vet
+            </Link>
+            <Link to="/appointments/new" className="px-6 py-3 bg-white border border-stone-200 hover:border-paw-teal text-paw-teal rounded-full font-bold transition-all">
+              Book Directly
+            </Link>
+          </div>
         </div>
       )}
 
@@ -74,23 +98,35 @@ const Appointments = () => {
           {appointments.map((appt) => (
             <div
               key={appt._id}
-              className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6 flex flex-col md:flex-row md:items-center gap-4 hover:border-slate-600 transition-all"
+              className="bg-white border border-stone-100 rounded-3xl p-5 flex flex-col sm:flex-row sm:items-start gap-4 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-bold text-white text-lg">{appt.clinicRef?.name || 'Unknown Clinic'}</h3>
-                  <span className={`text-xs px-2 py-0.5 border rounded-full font-medium ${STATUS_STYLES[appt.status]}`}>
+                <div className="flex items-center gap-3 flex-wrap mb-2">
+                  <h3 className="font-black text-paw-teal text-lg">{appt.clinicRef?.name || 'Unknown Clinic'}</h3>
+                  <span className={`text-xs px-2.5 py-1 border rounded-full font-bold capitalize ${STATUS_STYLES[appt.status]}`}>
                     {appt.status}
                   </span>
                 </div>
-                <p className="text-slate-400 text-sm">{appt.clinicRef?.address}</p>
-                <div className="flex flex-wrap gap-4 mt-3 text-sm">
-                  <span className="text-slate-300">🐾 <strong>{appt.petName}</strong> ({appt.petType})</span>
-                  <span className="text-slate-400">📅 {new Date(appt.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                  <span className="text-slate-400">🕐 {appt.timeSlot}</span>
+                {appt.clinicRef?.address && (
+                  <p className="text-stone-400 text-sm font-medium mb-2">📍 {appt.clinicRef.address}</p>
+                )}
+                <div className="flex flex-wrap gap-4 text-sm font-medium">
+                  <span className="text-paw-teal">🐾 <strong>{appt.petName}</strong> ({appt.petType})</span>
+                  <span className="text-stone-500">📅 {new Date(appt.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <span className="text-stone-500">🕐 {appt.timeSlot}</span>
                 </div>
-                {appt.notes && <p className="text-slate-500 text-xs mt-2 italic">"{appt.notes}"</p>}
+                {appt.notes && (
+                  <p className="text-stone-400 text-xs mt-2 italic">"{appt.notes}"</p>
+                )}
               </div>
+              {appt.status === 'pending' && (
+                <button
+                  onClick={() => handleCancel(appt._id)}
+                  className="px-4 py-2 border border-red-200 text-red-500 hover:bg-red-50 rounded-2xl text-sm font-bold transition-colors flex-shrink-0"
+                >
+                  Cancel
+                </button>
+              )}
             </div>
           ))}
         </div>

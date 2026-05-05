@@ -6,11 +6,11 @@ export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage first, otherwise fallback to system preference, default to dark
+    // Check localStorage first, otherwise fallback to system preference, default to light
     const stored = localStorage.getItem('theme');
     if (stored) return stored;
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
-    return 'dark'; // Defaulting to dark as requested
+    return 'light';
   });
 
   useEffect(() => {
