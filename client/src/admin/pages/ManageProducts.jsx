@@ -41,12 +41,57 @@ const ManageProducts = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const maxDim = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const jpgDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        setEditForm(prev => ({ ...prev, imageUrl: jpgDataUrl }));
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleEditClick = (product) => {
     setEditingId(product._id);
     setEditForm({
       name: product.name,
       price: product.price,
       stock: product.stock,
+      imageUrl: product.imageUrl || '',
       isFeatured: product.isFeatured || false,
     });
   };
@@ -158,11 +203,31 @@ const ManageProducts = () => {
                 return (
                   <tr key={product._id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
-                        {product.imageUrl ? (
-                          <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                      <div className="relative w-12 h-12 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 group">
+                        {isEditing ? (
+                          <>
+                            {editForm.imageUrl ? (
+                              <img src={editForm.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm font-bold">Upload</div>
+                            )}
+                            <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-[10px] text-white font-bold cursor-pointer transition-opacity duration-200">
+                              <span>📸</span>
+                              <span>Change</span>
+                              <input 
+                                type="file" 
+                                accept="image/*" 
+                                className="hidden" 
+                                onChange={handleImageChange} 
+                              />
+                            </label>
+                          </>
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-400 text-xl">📦</div>
+                          product.imageUrl ? (
+                            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-400 text-xl">📦</div>
+                          )
                         )}
                       </div>
                     </td>

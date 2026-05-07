@@ -23,6 +23,50 @@ const AddProduct = () => {
     setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const maxDim = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const jpgDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        setFormData(prev => ({ ...prev, imageUrl: jpgDataUrl }));
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -89,15 +133,46 @@ const AddProduct = () => {
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Image URL</label>
-            <div className="flex gap-4">
-              <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleChange} className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1D9E75] outline-none" placeholder="https://example.com/image.jpg" />
-              {formData.imageUrl && (
-                <div className="w-12 h-12 bg-slate-100 rounded border border-slate-200 overflow-hidden shrink-0">
-                  <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" onError={(e) => e.target.style.display='none'} />
-                </div>
-              )}
+            <label className="block text-sm font-medium text-slate-700 mb-1">Product Image</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-1">OPTION 1: Upload Image File (auto-converts to JPG)</label>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handleImageChange} 
+                  className="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm outline-none" 
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-1">OPTION 2: Or Paste Image URL</label>
+                <input 
+                  type="url" 
+                  name="imageUrl" 
+                  value={formData.imageUrl} 
+                  onChange={handleChange} 
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1D9E75] outline-none text-sm" 
+                  placeholder="https://example.com/image.jpg" 
+                />
+              </div>
             </div>
+            {formData.imageUrl && (
+              <div className="mt-3 flex items-center gap-3">
+                <div className="w-16 h-16 bg-slate-100 rounded-lg border border-slate-200 overflow-hidden shrink-0">
+                  <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-600">Image Preview</p>
+                  <button 
+                    type="button" 
+                    onClick={() => setFormData(prev => ({ ...prev, imageUrl: '' }))} 
+                    className="text-xs text-red-500 hover:underline"
+                  >
+                    Clear Image
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="md:col-span-2">

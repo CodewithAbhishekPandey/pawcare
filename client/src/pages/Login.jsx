@@ -44,7 +44,7 @@ const Login = () => {
             <span className="text-4xl drop-shadow-sm">🐾</span>
           </div>
           <h1 className="text-3xl font-black text-paw-teal">Welcome Back</h1>
-          <p className="text-stone-500 font-medium mt-2">Sign in to your PawCare account</p>
+          <p className="text-stone-500 font-medium mt-2">Sign in to your Pawvetra account</p>
         </div>
 
         {error && (
@@ -108,7 +108,7 @@ const Login = () => {
         </div>
 
         <p className="text-center text-stone-500 font-medium mt-8">
-          New to PawCare?{' '}
+          New to Pawvetra?{' '}
           <Link to="/register" className="text-paw-teal hover:text-paw-orange font-bold underline decoration-2 underline-offset-4 transition-colors">Create an account</Link>
         </p>
       </div>

@@ -30,7 +30,7 @@ const AdminSidebar = () => {
       {/* Logo */}
       <div className="h-16 flex items-center px-6 border-b border-slate-800">
         <span className="text-xl font-bold text-white flex items-center gap-2">
-          🐾 PawCare <span className="text-[#1D9E75]">Admin</span>
+          🐾 Pawvetra <span className="text-[#1D9E75]">Admin</span>
         </span>
       </div>
 

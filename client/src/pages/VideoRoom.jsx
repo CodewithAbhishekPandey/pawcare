@@ -28,7 +28,7 @@ const VideoRoom = () => {
     if (!containerRef.current || !user || !roomId) return;
 
     const userId = user._id || user.id || String(Date.now());
-    const userName = user.name || 'PawCare User';
+    const userName = user.name || 'Pawvetra User';
     const appId = parseInt(import.meta.env.VITE_ZEGO_APP_ID || '0');
 
     if (!appId) {
@@ -104,7 +104,7 @@ const VideoRoom = () => {
         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
           <div className="text-6xl mb-4">🙏</div>
           <h2 className="text-2xl font-black text-paw-teal mb-2">Thank you!</h2>
-          <p className="text-stone-500 font-medium">Your feedback helps us improve PawCare.</p>
+          <p className="text-stone-500 font-medium">Your feedback helps us improve Pawvetra.</p>
         </div>
       );
     }

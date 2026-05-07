@@ -68,7 +68,7 @@ const Navbar = ({ settings = {} }) => {
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 bg-paw-yellow rounded-2xl flex items-center justify-center text-2xl group-hover:rotate-12 transition-transform">🐾</div>
             <span className="text-2xl font-black text-paw-teal dark:text-white tracking-tighter lowercase">
-              pawtopia
+              pawvetra
             </span>
           </Link>
 

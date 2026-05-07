@@ -83,7 +83,7 @@ app.get('/api/settings/public', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'PawCare API is up and running 🐾', timestamp: new Date() });
+  res.json({ success: true, message: 'Pawvetra API is up and running 🐾', timestamp: new Date() });
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
@@ -135,7 +135,7 @@ async function startServer() {
     console.log('⚙️  Site settings loaded into cache');
 
     httpServer.listen(PORT, () => {
-      console.log(`🚀 PawCare server running on port ${PORT}`);
+      console.log(`🚀 Pawvetra server running on port ${PORT}`);
       console.log(`🔌 Socket.io ready`);
     });
   } catch (err) {

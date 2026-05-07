@@ -55,22 +55,22 @@ const QUICK_REPLIES = [
   { label: '🏥 Book a vet', value: 'How do I book a vet appointment?' },
   { label: '📹 Instant consult', value: 'How does instant video consult work?' },
   { label: '🛍️ Pet shop', value: 'What products do you sell?' },
-  { label: '🐾 About PawCare', value: 'What is PawCare?' },
+  { label: '🐾 About Pawvetra', value: 'What is Pawvetra?' },
 ];
 
 const RESPONSES = [
   {
     patterns: ['hello', 'hi', 'hey', 'hola', 'namaste', 'good morning', 'good evening', 'sup', 'yo'],
     replies: [
-      "Hey there! 🐾 I'm Bubbzy — your PawCare buddy! I'm here to help with anything pet-related. What can I sniff out for you today?",
-      "Woof woof! 🐕 Hi there! I'm Bubbzy, your furry assistant at PawCare. Ask me anything about bookings, consults, or our pet shop!",
+      "Hey there! 🐾 I'm Bubbzy — your Pawvetra buddy! I'm here to help with anything pet-related. What can I sniff out for you today?",
+      "Woof woof! 🐕 Hi there! I'm Bubbzy, your furry assistant at Pawvetra. Ask me anything about bookings, consults, or our pet shop!",
       "Ruff ruff! 👋 I'm Bubbzy! Super excited to help you out. Need a vet, some pet supplies, or just got questions? I'm all ears (literally)! 🦴",
     ],
   },
   {
-    patterns: ['what is pawcare', 'about pawcare', 'tell me about', 'what do you do', 'explain pawcare'],
+    patterns: ['what is pawvetra', 'about pawvetra', 'tell me about', 'what do you do', 'explain pawvetra'],
     replies: [
-      "PawCare is Gurugram's premium pet-care platform 🐾\n\n✅ **Book vet appointments** at top clinics\n✅ **Instant video consults** with licensed vets\n✅ **Pet shop** — food, toys, accessories & medicine\n✅ **Real-time vet matching** when your pet needs help NOW\n\nWe're here to make pet parenting stress-free! 🐶🐱",
+      "Pawvetra is Gurugram's premium pet-care platform 🐾\n\n✅ **Book vet appointments** at top clinics\n✅ **Instant video consults** with licensed vets\n✅ **Pet shop** — food, toys, accessories & medicine\n✅ **Real-time vet matching** when your pet needs help NOW\n\nWe're here to make pet parenting stress-free! 🐶🐱",
     ],
   },
   {
@@ -100,7 +100,7 @@ const RESPONSES = [
   {
     patterns: ['login', 'sign in', 'sign up', 'register', 'account', 'password'],
     replies: [
-      "You can create a free PawCare account in under a minute! 🐾\n\n👉 Click **Let's Go** in the top navigation to register\n👉 Already have an account? Click **Sign In**\n\n**Demo credentials you can try:**\n📧 `riya@pawcare.in`\n🔑 `Password123!`\n\nYour dashboard keeps track of all appointments, orders & consult history!",
+      "You can create a free Pawvetra account in under a minute! 🐾\n\n👉 Click **Let's Go** in the top navigation to register\n👉 Already have an account? Click **Sign In**\n\n**Demo credentials you can try:**\n📧 `riya@pawcare.in`\n🔑 `Password123!`\n\nYour dashboard keeps track of all appointments, orders & consult history!",
     ],
   },
   {
@@ -112,37 +112,37 @@ const RESPONSES = [
   {
     patterns: ['cancel', 'refund', 'cancellation'],
     replies: [
-      "Here's PawCare's cancellation info: ℹ️\n\n📅 **Appointment cancellation:** Cancel pending appointments from your Dashboard or My Appointments page — no charge.\n\n📦 **Order cancellation:** You can cancel orders that are still in 'placed' status from your Orders page.\n\n📹 **Consult cancellation:** Cancel from the Waiting Room before a vet connects. Refunds take 3–5 business days.\n\nNeed more help? Feel free to ask! 🐶",
+      "Here's Pawvetra's cancellation info: ℹ️\n\n📅 **Appointment cancellation:** Cancel pending appointments from your Dashboard or My Appointments page — no charge.\n\n📦 **Order cancellation:** You can cancel orders that are still in 'placed' status from your Orders page.\n\n📹 **Consult cancellation:** Cancel from the Waiting Room before a vet connects. Refunds take 3–5 business days.\n\nNeed more help? Feel free to ask! 🐶",
     ],
   },
   {
     patterns: ['rottweiler', 'your breed', 'what breed', 'what dog', 'bubbzy', 'who are you'],
     replies: [
-      "Woof! I'm Bubbzy — a proud Rottweiler! 🐕‍🦺\n\nRottweilers are known for being loyal, protective, and super smart — just like me! I take my job as PawCare's assistant very seriously 😤💼\n\nBut don't let my tough look fool you — I'm a total softie when it comes to helping pet parents like you! 🥰",
+      "Woof! I'm Bubbzy — a proud Rottweiler! 🐕‍🦺\n\nRottweilers are known for being loyal, protective, and super smart — just like me! I take my job as Pawvetra's assistant very seriously 😤💼\n\nBut don't let my tough look fool you — I'm a total softie when it comes to helping pet parents like you! 🥰",
     ],
   },
   {
     patterns: ['dog', 'puppy', 'cat', 'kitten', 'bird', 'rabbit', 'pet health', 'sick', 'ill', 'disease', 'symptom'],
     replies: [
-      "Oh no, is your furry friend not feeling well? 😟\n\nFor **urgent concerns**, I recommend:\n📹 **Instant Consult** — talk to a licensed vet right now!\n📅 **Book an appointment** at a clinic near you\n\n**Common things vets at PawCare treat:**\n• Skin conditions & allergies\n• Digestion issues\n• Vaccinations & preventive care\n• Dental health\n• Exotic pet care (birds, rabbits)\n\nYour pet's health is our top priority! 🐾",
+      "Oh no, is your furry friend not feeling well? 😟\n\nFor **urgent concerns**, I recommend:\n📹 **Instant Consult** — talk to a licensed vet right now!\n📅 **Book an appointment** at a clinic near you\n\n**Common things vets at Pawvetra treat:**\n• Skin conditions & allergies\n• Digestion issues\n• Vaccinations & preventive care\n• Dental health\n• Exotic pet care (birds, rabbits)\n\nYour pet's health is our top priority! 🐾",
     ],
   },
   {
     patterns: ['price', 'cost', 'fee', 'how much', 'charge', 'rate', 'rupee', '₹'],
     replies: [
-      "Here's a quick price guide at PawCare: 💰\n\n📹 **Instant Teleconsult:** ₹500 – ₹1,000 per session\n📅 **Clinic appointments:** Varies by clinic (typically ₹300–₹800)\n🛍️ **Pet food:** Starting from ₹350\n💊 **Medicine:** Starting from ₹250\n🎾 **Toys:** Starting from ₹199\n\nAll prices are clearly shown before you checkout. No hidden fees! ✅",
+      "Here's a quick price guide at Pawvetra: 💰\n\n📹 **Instant Teleconsult:** ₹500 – ₹1,000 per session\n📅 **Clinic appointments:** Varies by clinic (typically ₹300–₹800)\n🛍️ **Pet food:** Starting from ₹350\n💊 **Medicine:** Starting from ₹250\n🎾 **Toys:** Starting from ₹199\n\nAll prices are clearly shown before you checkout. No hidden fees! ✅",
     ],
   },
   {
     patterns: ['gurugram', 'gurgaon', 'location', 'where', 'area', 'sector', 'dlf', 'nearby'],
     replies: [
-      "PawCare currently serves **Gurugram (Gurgaon)** 📍\n\nWe have vet clinics across:\n• DLF Phase 2, Sector 25\n• Sector 56\n• Golf Course Road, Sector 42\n• And more areas nearby!\n\nUse the **Find Vets** feature — it uses your location to show clinics sorted by distance. 🗺️",
+      "Pawvetra currently serves **Gurugram (Gurgaon)** 📍\n\nWe have vet clinics across:\n• DLF Phase 2, Sector 25\n• Sector 56\n• Golf Course Road, Sector 42\n• And more areas nearby!\n\nUse the **Find Vets** feature — it uses your location to show clinics sorted by distance. 🗺️",
     ],
   },
   {
     patterns: ['razorpay', 'payment', 'upi', 'card', 'net banking', 'pay', 'safe', 'secure'],
     replies: [
-      "All payments on PawCare are **100% secure** 🔒\n\n💳 We use **Razorpay** — India's most trusted payment gateway\n\n**Accepted payment methods:**\n• UPI (PhonePe, GPay, Paytm)\n• Debit & Credit Cards\n• Net Banking\n• Wallets\n\nYour payment info is **never stored** on our servers. Safe & encrypted! ✅",
+      "All payments on Pawvetra are **100% secure** 🔒\n\n💳 We use **Razorpay** — India's most trusted payment gateway\n\n**Accepted payment methods:**\n• UPI (PhonePe, GPay, Paytm)\n• Debit & Credit Cards\n• Net Banking\n• Wallets\n\nYour payment info is **never stored** on our servers. Safe & encrypted! ✅",
     ],
   },
   {
@@ -171,7 +171,7 @@ const RESPONSES = [
 const FALLBACK = [
   "Hmm, that's a tricky one! 🤔 I'm still learning!\n\nHere's what I *can* help with:\n• Booking vet appointments\n• Instant video consults\n• Our pet shop\n• Orders & tracking\n\nOr try one of the quick options below! 🐾",
   "Woof! 🐕 I'm not sure about that one, but our team definitely can help! For now, try asking me about appointments, the shop, or instant consults!",
-  "That's beyond my sniffing range! 😄 But I'm great at helping with PawCare features like booking vets, teleconsults, and pet products. Give those a try!",
+  "That's beyond my sniffing range! 😄 But I'm great at helping with Pawvetra features like booking vets, teleconsults, and pet products. Give those a try!",
 ];
 
 function getBubbzyReply(userMsg) {
@@ -209,7 +209,7 @@ const BubbzyChat = () => {
     {
       id: 1,
       from: 'bot',
-      text: "Woof! I'm **Bubbzy** 🐕 — your PawCare assistant!\n\nAsk me anything about vet bookings, instant consults, our pet shop, or anything else! I'm here to help! 🐾",
+      text: "Woof! I'm **Bubbzy** 🐕 — your Pawvetra assistant!\n\nAsk me anything about vet bookings, instant consults, our pet shop, or anything else! I'm here to help! 🐾",
       ts: new Date(),
     },
   ]);
@@ -289,7 +289,7 @@ const BubbzyChat = () => {
                 <p className="text-white font-black text-base leading-tight">Bubbzy</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <p className="text-white/75 text-xs font-medium">PawCare Assistant · Online</p>
+                  <p className="text-white/75 text-xs font-medium">Pawvetra Assistant · Online</p>
                 </div>
               </div>
             </div>

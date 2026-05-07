@@ -14,6 +14,7 @@ import BubbzyChat from './components/BubbzyChat';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VerifyOTP from './pages/VerifyOTP';
 import VetList from './pages/VetList';
 import VetProfile from './pages/VetProfile';
 import Shop from './pages/Shop';
@@ -50,6 +51,7 @@ function AppRoutes({ settings }) {
           <Route path="/" element={<Home settings={settings} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/vets" element={<VetList />} />
           <Route path="/vets/:id" element={<VetProfile />} />
           <Route path="/shop" element={<Shop />} />

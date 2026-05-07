@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
   isBanned:    { type: Boolean, default: false },
   isSuspended: { type: Boolean, default: false },
   isDeleted:   { type: Boolean, default: false },
+
+  // OTP verification fields
+  isVerified:  { type: Boolean, default: false },
+  otp:         { type: String,  default: null },
+  otpExpiry:   { type: Date,    default: null },
+  otpAttempts: { type: Number,  default: 0 },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

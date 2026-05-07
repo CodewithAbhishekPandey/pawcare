@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import api from '../api/axios';
 
 const Register = () => {
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'pet_owner', phone: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register, user } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,8 +17,22 @@ const Register = () => {
     setError('');
     setLoading(true);
     try {
-      await register(form.name, form.email, form.password, form.role);
-      navigate('/dashboard');
+      const res = await api.post('/auth/register', { 
+        name: form.name, 
+        email: form.email, 
+        password: form.password, 
+        role: form.role,
+        phone: form.phone
+      });
+      if (res.data.success) {
+        navigate('/verify-otp', { 
+          state: { 
+            userId: res.data.data.userId, 
+            email: res.data.data.email, 
+            name: res.data.data.name 
+          } 
+        });
+      }
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Registration failed.');
     } finally {
@@ -46,7 +61,7 @@ const Register = () => {
             <span className="text-4xl">🐾</span>
           </div>
           <h1 className="text-3xl font-black text-paw-teal">Create Account</h1>
-          <p className="text-stone-500 font-medium mt-2">Join PawCare — Gurugram's premier pet platform</p>
+          <p className="text-stone-500 font-medium mt-2">Join Pawvetra — Gurugram's premier pet platform</p>
         </div>
 
         {error && (

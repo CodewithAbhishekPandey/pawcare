@@ -47,7 +47,7 @@ const AdminLogin = () => {
         <div className="text-center mb-8">
           <span className="text-4xl block mb-2">🐾</span>
           <h2 className="text-2xl font-bold text-white">Admin Login</h2>
-          <p className="text-slate-400 mt-2">PawCare Platform Management</p>
+          <p className="text-slate-400 mt-2">Pawvetra Platform Management</p>
         </div>
 
         {error && (

@@ -66,7 +66,7 @@ const PaymentModal = ({ vet, onClose, onPaymentSuccess }) => {
         key,
         amount,
         currency,
-        name: 'PawCare',
+        name: 'Pawvetra',
         description: `Teleconsult with ${vetName}`,
         order_id: orderId,
         prefill: { name: '', email: '', contact: '' },
